@@ -1,0 +1,239 @@
+{
+  "versao": 1,
+  "config": {
+    "nome": "Pizzaria Pereira",
+    "whatsapp": "17992301855",
+    "telefoneFixo": "(16) 3615-4495",
+    "instagram": "pizzaria_pereira",
+    "endereco": "Rua Daniel Esteves, 238 - Jardim Orestes Lopes de Camargo, Ribeirão Preto - SP",
+    "cepLoja": "",
+    "lojaLat": null,
+    "lojaLng": null,
+    "pedidoMinimo": 10,
+    "tempoEntrega": "40 a 60 min",
+    "tempoRetirada": "20 a 30 min",
+    "maxSabores": { "broto": 2, "grande": 2 },
+    "fatias": { "broto": 4, "grande": 8 },
+    "tamanhos": [
+      { "id": "broto", "nome": "Broto", "desc": "25 cm · 4 fatias" },
+      { "id": "grande", "nome": "Grande", "desc": "8 fatias" }
+    ],
+    "modoTeste": true,
+    "statusManual": "auto",
+    "fundadora": "Ana Dias",
+    "ceo": "Thainá Pereira da Silva"
+  },
+  "horarios": [
+    { "dia": 0, "aberto": true, "abre": "18:00", "fecha": "23:00" },
+    { "dia": 1, "aberto": false, "abre": "18:00", "fecha": "23:20" },
+    { "dia": 2, "aberto": true, "abre": "18:00", "fecha": "23:20" },
+    { "dia": 3, "aberto": true, "abre": "18:00", "fecha": "23:20" },
+    { "dia": 4, "aberto": false, "abre": "18:00", "fecha": "23:20" },
+    { "dia": 5, "aberto": true, "abre": "18:00", "fecha": "23:20" },
+    { "dia": 6, "aberto": false, "abre": "18:00", "fecha": "23:20" }
+  ],
+  "entrega": {
+    "faixas": [
+      { "ateKm": 3, "taxa": 5 },
+      { "ateKm": 10, "taxa": 10 },
+      { "ateKm": 20, "taxa": 10 }
+    ],
+    "bairros": [
+      { "nome": "Bairro exemplo A (ajuste no portal)", "km": 2 },
+      { "nome": "Bairro exemplo B (ajuste no portal)", "km": 6 },
+      { "nome": "Bairro exemplo C (ajuste no portal)", "km": 14 }
+    ]
+  },
+  "categorias": [
+    { "id": "copa", "nome": "Copa 2026" },
+    { "id": "promo", "nome": "Promocionais" },
+    { "id": "classicas", "nome": "Clássicas" },
+    { "id": "premium", "nome": "Premium" },
+    { "id": "requeijao", "nome": "Com requeijão" },
+    { "id": "verduras", "nome": "Verduras e legumes" },
+    { "id": "times", "nome": "Times" },
+    { "id": "doces", "nome": "Doces" }
+  ],
+  "sabores": [
+    { "id": "alemanha", "nome": "Alemanha", "cat": "copa", "ing": "molho, mussarela, milho, requeijão, bacon, barbecue e orégano", "g": 65, "b": null, "novo": true },
+    { "id": "brasil", "nome": "Brasil", "cat": "copa", "ing": "molho, mussarela, calabresa, requeijão, tomate cereja, alho-poró, azeitona e orégano", "g": 70, "b": null, "novo": true },
+    { "id": "estados-unidos", "nome": "Estados Unidos", "cat": "copa", "ing": "molho, mussarela, frango picado ao molho barbecue e bacon crocante", "g": 70, "b": null, "novo": true },
+
+    { "id": "promo-apresuntado", "nome": "Apresuntado", "cat": "promo", "ing": "molho, apresuntado, cebola, mussarela, tomate, azeitona e orégano", "g": 40, "b": 25 },
+    { "id": "promo-calabresa", "nome": "Calabresa", "cat": "promo", "ing": "molho, calabresa, cebola, mussarela, tomate, azeitona e orégano", "g": 40, "b": 25 },
+    { "id": "promo-chocolate", "nome": "Chocolate", "cat": "promo", "ing": "creme de leite e chocolate", "g": 40, "b": 25 },
+    { "id": "promo-milho", "nome": "Milho", "cat": "promo", "ing": "molho, milho, mussarela, tomate, azeitona e orégano", "g": 40, "b": 25 },
+    { "id": "promo-vinagrete", "nome": "Vinagrete", "cat": "promo", "ing": "molho, mussarela, vinagrete, azeitona e orégano", "g": 40, "b": 25 },
+
+    { "id": "apresuntado-especial", "nome": "Apresuntado Especial", "cat": "classicas", "ing": "molho, apresuntado, cebola, mussarela, tomate, azeitona e orégano (mais recheio)", "g": 50, "b": null },
+    { "id": "atum", "nome": "Atum", "cat": "classicas", "ing": "molho, atum, cebola, mussarela, tomate, azeitona e orégano", "g": 60, "b": 35 },
+    { "id": "bacon", "nome": "Bacon", "cat": "classicas", "ing": "molho, bacon, mussarela, tomate, azeitona e orégano", "g": 60, "b": null },
+    { "id": "baiana", "nome": "Baiana", "cat": "classicas", "ing": "molho, apresuntado, calabresa picada, pimenta, mussarela, tomate, azeitona e orégano", "g": 60, "b": 35 },
+    { "id": "calabresa-especial", "nome": "Calabresa Especial", "cat": "classicas", "ing": "molho, calabresa, cebola, mussarela, tomate, azeitona e orégano (mais recheio)", "g": 58, "b": null },
+    { "id": "do-cliente", "nome": "Do Cliente", "cat": "classicas", "ing": "monte com 5 ingredientes do cardápio e escreva na observação (exceto cebola, tomate, azeitona e orégano)", "g": 75, "b": null, "pedeObs": true },
+    { "id": "especialidade-do-dia", "nome": "Especialidade do Dia", "cat": "classicas", "ing": "molho, lombo, palmito, ervilha, ovo, cebola, mussarela, bacon, tomate, azeitona e orégano", "g": 65, "b": null },
+    { "id": "frango", "nome": "Frango", "cat": "classicas", "ing": "molho, frango, mussarela, tomate, azeitona e orégano", "g": 55, "b": null },
+    { "id": "lombo-canadense", "nome": "Lombo Canadense", "cat": "classicas", "ing": "molho, lombo, cebola, mussarela, tomate, azeitona e orégano", "g": 55, "b": null },
+    { "id": "milho-especial", "nome": "Milho Especial", "cat": "classicas", "ing": "molho, milho, mussarela, tomate, azeitona e orégano (mais recheio)", "g": 46, "b": null },
+    { "id": "mussarela", "nome": "Mussarela", "cat": "classicas", "ing": "molho, mussarela, tomate, azeitona e orégano", "g": 52, "b": 30 },
+    { "id": "mussarela-especial", "nome": "Mussarela Especial", "cat": "classicas", "ing": "molho, mussarela, tomate, azeitona e orégano (mais recheio)", "g": 65, "b": null },
+    { "id": "palmito", "nome": "Palmito", "cat": "classicas", "ing": "molho, palmito, mussarela, tomate, azeitona e orégano", "g": 55, "b": null },
+    { "id": "paulista", "nome": "Paulista", "cat": "classicas", "ing": "molho, apresuntado, ervilha, palmito, cebola, mussarela, bacon, tomate, azeitona e orégano", "g": 65, "b": 35 },
+    { "id": "portuguesa", "nome": "Portuguesa", "cat": "classicas", "ing": "molho, apresuntado, ervilha, ovo, palmito, cebola, mussarela, tomate, azeitona e orégano", "g": 60, "b": 35 },
+
+    { "id": "alho-poro", "nome": "Alho-poró", "cat": "premium", "ing": "molho, mussarela, requeijão, tomate cereja, orégano e alho-poró", "g": 65, "b": null, "novo": true },
+    { "id": "calabresa-biquinho", "nome": "Calabresa Biquinho", "cat": "premium", "ing": "molho, mussarela, calabresa, cebola, cream cheese e pimenta biquinho", "g": 65, "b": null },
+    { "id": "costela-premium", "nome": "Costela Premium", "cat": "premium", "ing": "molho, mussarela, costela desfiada, cebola, requeijão, queijo coalho, cheiro-verde, pimenta biquinho e azeitona", "g": 85, "b": null, "novo": true },
+    { "id": "cupim", "nome": "Cupim", "cat": "premium", "ing": "carne de cupim, requeijão e tomate cereja", "g": 85, "b": null, "novo": true },
+    { "id": "da-casa-especial", "nome": "Da Casa Especial", "cat": "premium", "ing": "lombo, calabresa, milho, ovo, couve, cebola, mussarela, requeijão, bacon, tomate, azeitona e orégano", "g": 70, "b": 40 },
+    { "id": "da-silva", "nome": "Da Silva", "cat": "premium", "ing": "molho, mussarela, carne seca desfiada, cebola, cream cheese, pimenta biquinho, cheiro-verde, queijo coalho, azeitona e orégano", "g": 85, "b": null, "novo": true },
+    { "id": "dias", "nome": "Dias", "cat": "premium", "ing": "molho, mussarela, lombo, requeijão, bacon em cubo, tomate cereja, azeitona e orégano", "g": 70, "b": null, "novo": true },
+    { "id": "doritos", "nome": "Doritos", "cat": "premium", "ing": "molho, mussarela e doritos", "g": 65, "b": 35 },
+    { "id": "mineira", "nome": "Mineira", "cat": "premium", "ing": "", "g": 55, "b": null },
+    { "id": "peito-de-peru", "nome": "Peito de Peru Premium", "cat": "premium", "ing": "molho, mussarela, peito de peru fatiado, requeijão, tomate cereja, azeitona e orégano", "g": 70, "b": null, "novo": true },
+    { "id": "pepperoni", "nome": "Pepperoni", "cat": "premium", "ing": "mussarela, pepperoni, azeitona e orégano", "g": 65, "b": null },
+    { "id": "pereira", "nome": "Pereira", "cat": "premium", "ing": "molho, mussarela, calabresa, cream cheese, bacon em cubo, queijo coalho, azeitona e orégano", "g": 75, "b": 40, "novo": true },
+    { "id": "strogonofe", "nome": "Strogonofe", "cat": "premium", "ing": "molho, mussarela, strogonofe e batata palha", "g": 70, "b": 40, "novo": true },
+    { "id": "tortone", "nome": "Tortone", "cat": "premium", "ing": "sabor da sua preferência (escreva na observação), finalizada com mais uma massa por cima, ao molho e mussarela", "g": 75, "b": null, "pedeObs": true },
+
+    { "id": "apresuntado-requeijao", "nome": "Apresuntado com Requeijão", "cat": "requeijao", "ing": "molho, apresuntado, mussarela, requeijão, azeitona e orégano", "g": 52, "b": null },
+    { "id": "atum-requeijao", "nome": "Atum com Requeijão", "cat": "requeijao", "ing": "molho, atum, mussarela, requeijão, azeitona e orégano", "g": 62, "b": null },
+    { "id": "calabresa-requeijao", "nome": "Calabresa com Requeijão", "cat": "requeijao", "ing": "molho, calabresa, mussarela, requeijão, azeitona e orégano", "g": 52, "b": null },
+    { "id": "calabria", "nome": "Calábria", "cat": "requeijao", "ing": "calabresa, cebola, mussarela, requeijão, batata palha, azeitona e orégano", "g": 60, "b": null },
+    { "id": "dois-queijos", "nome": "Dois Queijos", "cat": "requeijao", "ing": "molho, mussarela, requeijão, azeitona e orégano", "g": 55, "b": null },
+    { "id": "frango-crocante", "nome": "Frango Crocante", "cat": "requeijao", "ing": "frango, mussarela, requeijão, batata palha, azeitona e orégano", "g": 70, "b": null },
+    { "id": "frango-quatro-queijos", "nome": "Frango Quatro Queijos", "cat": "requeijao", "ing": "frango, mussarela, requeijão, parmesão e gorgonzola", "g": 70, "b": null },
+    { "id": "frango-requeijao", "nome": "Frango com Requeijão", "cat": "requeijao", "ing": "molho, frango, mussarela e requeijão cremoso", "g": 65, "b": 40 },
+    { "id": "lombo-requeijao", "nome": "Lombo com Requeijão", "cat": "requeijao", "ing": "molho, lombo, mussarela, requeijão, azeitona e orégano", "g": 60, "b": 35 },
+    { "id": "lombo-catupiry", "nome": "Lombo com Catupiry", "cat": "requeijao", "ing": "molho, lombo, mussarela e catupiry", "g": null, "b": 35 },
+    { "id": "milho-requeijao", "nome": "Milho com Requeijão", "cat": "requeijao", "ing": "molho, milho, mussarela, requeijão, azeitona e orégano", "g": 50, "b": null },
+    { "id": "palmito-requeijao", "nome": "Palmito com Requeijão", "cat": "requeijao", "ing": "molho, palmito, mussarela, requeijão, azeitona e orégano", "g": 60, "b": 35 },
+    { "id": "quatro-queijos", "nome": "Quatro Queijos", "cat": "requeijao", "ing": "molho, mussarela, requeijão, parmesão, gorgonzola, tomate, azeitona e orégano", "g": 60, "b": 35 },
+
+    { "id": "brocolis", "nome": "Brócolis", "cat": "verduras", "ing": "molho, brócolis temperado, cebola, mussarela, tomate, azeitona e orégano", "g": 55, "b": 30 },
+    { "id": "brocolis-especial", "nome": "Brócolis Especial", "cat": "verduras", "ing": "molho, brócolis, cebola, mussarela, catupiry, bacon, tomate, alho frito, azeitona e orégano", "g": 65, "b": 35 },
+    { "id": "rucula", "nome": "Rúcula", "cat": "verduras", "ing": "molho, mussarela, rúcula fresca, bacon em cubo, tomate cereja e alho frito", "g": 60, "b": null, "novo": true },
+    { "id": "vegetariana", "nome": "Vegetariana", "cat": "verduras", "ing": "molho, brócolis, couve, cebola, milho, champignon, mussarela, tomate, azeitona e orégano", "g": 55, "b": null },
+
+    { "id": "corinthians", "nome": "Corinthians", "cat": "times", "ing": "molho, calabresa, frango, mussarela, catupiry, tomate, azeitona e orégano", "g": 65, "b": null },
+    { "id": "flamengo", "nome": "Flamengo", "cat": "times", "ing": "molho, calabresa, milho, cebola, mussarela, catupiry, tomate, azeitona e orégano", "g": 65, "b": null },
+    { "id": "palmeiras", "nome": "Palmeiras", "cat": "times", "ing": "molho, lombo, cebola, mussarela, catupiry, bacon, tomate, azeitona e orégano", "g": 65, "b": null },
+    { "id": "santos", "nome": "Santos", "cat": "times", "ing": "molho, mussarela, atum, catupiry, bacon, tomate, azeitona e orégano", "g": 65, "b": null },
+    { "id": "sao-paulo", "nome": "São Paulo", "cat": "times", "ing": "molho, apresuntado, calabresa, cebola, mussarela, catupiry, bacon, tomate, azeitona e orégano", "g": 65, "b": null },
+
+    { "id": "tres-desejos", "nome": "3 Desejos", "cat": "doces", "ing": "creme de leite, chocolate, chocolate branco e morangos", "g": 60, "b": 35 },
+    { "id": "abacaxi-ninho", "nome": "Abacaxi com Ninho", "cat": "doces", "ing": "creme de ninho e abacaxi", "g": 70, "b": null, "novo": true },
+    { "id": "abacaxi", "nome": "Abacaxi", "cat": "doces", "ing": "creme de leite, chocolate branco, abacaxi e cereja", "g": 55, "b": null },
+    { "id": "abacaxi-nevada", "nome": "Abacaxi Nevada", "cat": "doces", "ing": "mussarela, abacaxi e chocolate branco gratinado", "g": 60, "b": 35 },
+    { "id": "banana-nevada", "nome": "Banana Nevada", "cat": "doces", "ing": "creme de leite, banana assada e chocolate branco", "g": 60, "b": 35 },
+    { "id": "s2-bella", "nome": "S2 Bella", "cat": "doces", "ing": "cookies, morangos e chocolate ao leite", "g": 65, "b": null, "novo": true },
+    { "id": "brigadeiro", "nome": "Brigadeiro", "cat": "doces", "ing": "creme de leite, chocolate e granulado", "g": 50, "b": 30 },
+    { "id": "casadinha", "nome": "Casadinha", "cat": "doces", "ing": "creme de leite, chocolate e chocolate branco", "g": 50, "b": 30 },
+    { "id": "chocolate-branco", "nome": "Chocolate Branco", "cat": "doces", "ing": "creme de leite, chocolate branco e cereja", "g": 52, "b": 32 },
+    { "id": "chocolate-cereja", "nome": "Chocolate com Cereja", "cat": "doces", "ing": "creme de leite, chocolate e cereja", "g": 52, "b": null },
+    { "id": "cookies", "nome": "Cookies", "cat": "doces", "ing": "", "g": 55, "b": 35 },
+    { "id": "kinder-bueno", "nome": "Kinder Bueno", "cat": "doces", "ing": "", "g": 70, "b": 35 },
+    { "id": "kit-kat", "nome": "Kit Kat", "cat": "doces", "ing": "creme de leite, chocolate e kit kat", "g": 60, "b": 35 },
+    { "id": "morango-ninho", "nome": "Morango com Ninho", "cat": "doces", "ing": "creme de ninho e morangos", "g": 70, "b": 40, "novo": true },
+    { "id": "nevada-tropical", "nome": "Nevada Tropical", "cat": "doces", "ing": "mussarela, abacaxi, tiras de chocolate branco gratinado e coco ralado", "g": 70, "b": 40, "novo": true },
+    { "id": "pereirinha", "nome": "Pereirinha", "cat": "doces", "ing": "chocolate ao leite cremoso, raspas de chocolate e morangos", "g": 80, "b": 45, "novo": true },
+    { "id": "pistache-chocolate", "nome": "Pistache com Chocolate", "cat": "doces", "ing": "creme de pistache e chocolate ao leite", "g": 70, "b": 40, "novo": true },
+    { "id": "pistache-morango", "nome": "Pistache com Morango", "cat": "doces", "ing": "", "g": 70, "b": 35, "novo": true },
+    { "id": "prestigio", "nome": "Prestígio", "cat": "doces", "ing": "creme de leite, chocolate, coco ralado e leite condensado", "g": 50, "b": 30 },
+    { "id": "romeu-julieta", "nome": "Romeu e Julieta", "cat": "doces", "ing": "mussarela e goiabada", "g": null, "b": 30 },
+    { "id": "sensacao", "nome": "Sensação", "cat": "doces", "ing": "creme de leite, chocolate, morangos e leite condensado", "g": 60, "b": 35 },
+    { "id": "sensacao-2", "nome": "Sensação 2", "cat": "doces", "ing": "chocolate branco, morangos e cobertura de morango", "g": 60, "b": 35 },
+    { "id": "tortuguita", "nome": "Tortuguita", "cat": "doces", "ing": "", "g": 60, "b": 35 },
+    { "id": "tropical", "nome": "Tropical", "cat": "doces", "ing": "banana, mussarela e canela em pó", "g": 50, "b": 30 },
+    { "id": "uva-chocolate", "nome": "Uva Verde com Chocolate", "cat": "doces", "ing": "uva verde e chocolate ao leite", "g": 60, "b": 35 },
+    { "id": "uva-ninho", "nome": "Uva Verde com Ninho", "cat": "doces", "ing": "uva verde e creme de ninho", "g": 70, "b": 40 },
+    { "id": "uva-morango", "nome": "Uva com Morango", "cat": "doces", "ing": "", "g": 70, "b": 40 }
+  ],
+  "bordas": [
+    { "id": "sem", "nome": "Sem borda recheada", "preco": 0, "cor": "" },
+    { "id": "mussarela", "nome": "Mussarela", "preco": 12, "cor": "#F2D27A", "exemplo": true },
+    { "id": "cheddar", "nome": "Cheddar", "preco": 12, "cor": "#E8892B", "exemplo": true },
+    { "id": "catupiry", "nome": "Catupiry", "preco": 12, "cor": "#FBF6EA", "exemplo": true }
+  ],
+  "massas": [
+    { "id": "tradicional", "nome": "Tradicional", "desc": "A massa de sempre da casa", "preco": 0 }
+  ],
+  "adicionais": [
+    { "id": "acomp-batata", "tipo": "acompanhamento", "grupo": "Porções", "nome": "Batata frita", "preco": 20, "exemplo": true },
+    { "id": "acomp-molho", "tipo": "acompanhamento", "grupo": "Extras", "nome": "Sachê de molho barbecue", "preco": 3, "exemplo": true },
+    { "id": "coca-2l", "tipo": "bebida", "grupo": "Refrigerantes", "nome": "Coca-Cola 2L", "preco": 15 },
+    { "id": "coca-zero", "tipo": "bebida", "grupo": "Refrigerantes", "nome": "Coca-Cola Zero", "preco": 15 },
+    { "id": "guarana-2l", "tipo": "bebida", "grupo": "Refrigerantes", "nome": "Guaraná Antarctica 2L", "preco": 13 },
+    { "id": "jaboti-maca", "tipo": "bebida", "grupo": "Refrigerantes", "nome": "Jaboti Maçã 2L", "preco": 8 },
+    { "id": "jaboti-uva", "tipo": "bebida", "grupo": "Refrigerantes", "nome": "Jaboti Uva 2L", "preco": 8 },
+    { "id": "sprite", "tipo": "bebida", "grupo": "Refrigerantes", "nome": "Sprite", "preco": 13 },
+    { "id": "suco-goiaba", "tipo": "bebida", "grupo": "Sucos", "nome": "Suco de goiaba 1L", "preco": 7 },
+    { "id": "suco-laranja", "tipo": "bebida", "grupo": "Sucos", "nome": "Suco de laranja 1L", "preco": 7 },
+    { "id": "suco-maracuja", "tipo": "bebida", "grupo": "Sucos", "nome": "Suco de maracujá 1L", "preco": 7 },
+    { "id": "suco-morango", "tipo": "bebida", "grupo": "Sucos", "nome": "Suco de morango 1L", "preco": 7 }
+  ],
+  "promocoes": [
+    {
+      "id": "combo-47", "nome": "Combo Pizza + Refri", "descricao": "1 pizza promocional grande + 1 refrigerante 2L", "ativa": true,
+      "quando": { "dias": [], "horaIni": "", "horaFim": "", "dataIni": "", "dataFim": "", "canal": "todos", "cupom": "" },
+      "condicao": { "tipo": "itens", "valorMin": 0, "slots": [
+        { "qtd": 1, "tipo": "pizza", "tamanho": "grande", "categorias": ["promo"], "sabores": [], "itens": [], "padrao": ["promo-calabresa"] },
+        { "qtd": 1, "tipo": "item", "tamanho": "", "categorias": [], "sabores": [], "itens": ["coca-2l", "guarana-2l", "jaboti-maca", "jaboti-uva"], "padrao": ["jaboti-maca"] }
+      ] },
+      "recompensa": { "tipo": "preco_fixo", "valor": 47, "itemId": "" },
+      "regras": { "acumula": false, "prioridade": 1, "maxPorPedido": 3 }
+    },
+    {
+      "id": "combo-65", "nome": "Combo Especial", "descricao": "1 promocional grande + 1 broto de chocolate + Jaboti 2L", "ativa": true,
+      "quando": { "dias": [], "horaIni": "", "horaFim": "", "dataIni": "", "dataFim": "", "canal": "todos", "cupom": "" },
+      "condicao": { "tipo": "itens", "valorMin": 0, "slots": [
+        { "qtd": 1, "tipo": "pizza", "tamanho": "grande", "categorias": ["promo"], "sabores": [], "itens": [], "padrao": ["promo-calabresa"] },
+        { "qtd": 1, "tipo": "pizza", "tamanho": "broto", "categorias": [], "sabores": ["promo-chocolate"], "itens": [], "padrao": ["promo-chocolate"] },
+        { "qtd": 1, "tipo": "item", "tamanho": "", "categorias": [], "sabores": [], "itens": ["jaboti-maca", "jaboti-uva"], "padrao": ["jaboti-maca"] }
+      ] },
+      "recompensa": { "tipo": "preco_fixo", "valor": 65, "itemId": "" },
+      "regras": { "acumula": false, "prioridade": 2, "maxPorPedido": 3 }
+    },
+    {
+      "id": "combo-75", "nome": "Combo 2P + Coca", "descricao": "1 promocional grande + 1 broto de chocolate + Coca-Cola 2L", "ativa": true,
+      "quando": { "dias": [], "horaIni": "", "horaFim": "", "dataIni": "", "dataFim": "", "canal": "todos", "cupom": "" },
+      "condicao": { "tipo": "itens", "valorMin": 0, "slots": [
+        { "qtd": 1, "tipo": "pizza", "tamanho": "grande", "categorias": ["promo"], "sabores": [], "itens": [], "padrao": ["promo-calabresa"] },
+        { "qtd": 1, "tipo": "pizza", "tamanho": "broto", "categorias": [], "sabores": ["promo-chocolate"], "itens": [], "padrao": ["promo-chocolate"] },
+        { "qtd": 1, "tipo": "item", "tamanho": "", "categorias": [], "sabores": [], "itens": ["coca-2l"], "padrao": ["coca-2l"] }
+      ] },
+      "recompensa": { "tipo": "preco_fixo", "valor": 75, "itemId": "" },
+      "regras": { "acumula": false, "prioridade": 3, "maxPorPedido": 3 }
+    },
+    {
+      "id": "combo-110", "nome": "Combo Família", "descricao": "2 promocionais grandes + 1 broto doce + Coca-Cola 2L", "ativa": true,
+      "quando": { "dias": [], "horaIni": "", "horaFim": "", "dataIni": "", "dataFim": "", "canal": "todos", "cupom": "" },
+      "condicao": { "tipo": "itens", "valorMin": 0, "slots": [
+        { "qtd": 2, "tipo": "pizza", "tamanho": "grande", "categorias": ["promo"], "sabores": [], "itens": [], "padrao": ["promo-calabresa", "promo-milho"] },
+        { "qtd": 1, "tipo": "pizza", "tamanho": "broto", "categorias": ["doces"], "sabores": ["promo-chocolate"], "itens": [], "padrao": ["brigadeiro"] },
+        { "qtd": 1, "tipo": "item", "tamanho": "", "categorias": [], "sabores": [], "itens": ["coca-2l"], "padrao": ["coca-2l"] }
+      ] },
+      "recompensa": { "tipo": "preco_fixo", "valor": 110, "itemId": "" },
+      "regras": { "acumula": false, "prioridade": 4, "maxPorPedido": 2 }
+    },
+    {
+      "id": "exemplo-frete", "nome": "Frete grátis acima de R$ 120", "descricao": "Exemplo de promoção por valor mínimo. Ative no portal se quiser usar.", "ativa": false, "exemplo": true,
+      "quando": { "dias": [], "horaIni": "", "horaFim": "", "dataIni": "", "dataFim": "", "canal": "entrega", "cupom": "" },
+      "condicao": { "tipo": "valor", "valorMin": 120, "slots": [] },
+      "recompensa": { "tipo": "frete_gratis", "valor": 0, "itemId": "" },
+      "regras": { "acumula": true, "prioridade": 9, "maxPorPedido": 1 }
+    },
+    {
+      "id": "exemplo-brinde", "nome": "Compre 2 grandes, ganhe um Guaraná 2L", "descricao": "Exemplo de brinde por quantidade. Ative no portal se quiser usar.", "ativa": false, "exemplo": true,
+      "quando": { "dias": [2], "horaIni": "", "horaFim": "", "dataIni": "", "dataFim": "", "canal": "todos", "cupom": "" },
+      "condicao": { "tipo": "itens", "valorMin": 0, "slots": [
+        { "qtd": 2, "tipo": "pizza", "tamanho": "grande", "categorias": [], "sabores": [], "itens": [], "padrao": [] }
+      ] },
+      "recompensa": { "tipo": "brinde", "valor": 0, "itemId": "guarana-2l" },
+      "regras": { "acumula": true, "prioridade": 8, "maxPorPedido": 1 }
+    }
+  ],
+  "usuarios": [
+    { "id": "u-admin", "nome": "Administrador", "login": "admin", "admin": true, "salt": "%%ADMIN_SALT%%", "hash": "%%ADMIN_HASH%%" }
+  ]
+}

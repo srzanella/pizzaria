@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Entregador Pereira</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:#07170D;color:#F6EFE0;font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;place-items:center;padding:24px}
+  main{width:min(420px,100%);display:grid;gap:16px;text-align:center}
+  h1{margin:0;font:800 30px/1.1 Georgia,serif}
+  p{margin:0;color:#B9C7B5}
+  label{display:grid;gap:6px;text-align:left;font-weight:700;font-size:14px;color:#B9C7B5}
+  input{width:100%;min-height:54px;border-radius:14px;border:2px solid #24502F;background:#0F2B19;color:#F6EFE0;font-size:17px;padding:0 14px}
+  input:focus{outline:none;border-color:#2FBF6B}
+  button{min-height:54px;border:0;border-radius:16px;background:#2FBF6B;color:#062012;font-weight:800;font-size:16px}
+  .erro{background:rgba(240,82,74,.14);color:#FFB3AE;border-radius:14px;padding:12px;font-weight:700;font-size:14px}
+  svg{width:120px;height:120px;margin:0 auto}
+  small{color:#7F927C;font-size:12.5px}
+</style>
+</head>
+<body>
+<main>
+  <svg viewBox="-14 -16 28 26" aria-hidden="true"><circle cx="-5.5" cy="5" r="2.8" fill="#F6EFE0"/><circle cx="6" cy="5" r="2.8" fill="#F6EFE0"/><path d="M-7.5,4 C-7.5,1 -4.5,0 -1.5,0 L4,0 L6.8,-3.4 L8.3,-2.6 L6,2 L4.6,4.2 Z" fill="#F0524A"/><rect x="-10" y="-7" width="7.4" height="6.4" rx="1.2" fill="#FBF4E6" stroke="#E5B23C" stroke-width=".8"/><path d="M-1.4,-0.6 C-1.4,-5 0.8,-7.6 2.8,-7.6 C4.4,-7.6 5,-6 4.6,-4.4 L3.6,-0.6 Z" fill="#2FBF6B"/><circle cx="3.2" cy="-9.6" r="2.7" fill="#F0524A"/></svg>
+  <h1>Entregador Pereira</h1>
+  <p id="txt">Digite o endereço do sistema da pizzaria. Quem cuida da gestão sabe (aparece em Entregadores → App do entregador).</p>
+  <div class="erro" id="erro" hidden></div>
+  <label>Endereço da pizzaria<input id="srv" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="http://192.168.0.10:8090"></label>
+  <button type="button" id="ir">Conectar</button>
+  <small id="ver"></small>
+</main>
+<script>
+  var N = window.PereiraNativo;
+  var campo = document.getElementById('srv');
+  campo.value = (N && (N.servidor() || N.servidorPadrao())) || '';
+  var m = location.hash.match(/^#erro=(.*)$/);
+  if (m) {
+    var e = document.getElementById('erro');
+    e.hidden = false;
+    e.textContent = 'Não deu para abrir ' + (campo.value || 'o endereço') + ' (' + decodeURIComponent(m[1]) + '). Confira se o celular está na mesma rede (Wi-Fi) e se o endereço está certo.';
+    document.getElementById('ir').textContent = 'Tentar de novo';
+  }
+  if (N && N.versao) document.getElementById('ver').textContent = 'versão ' + N.versao();
+  document.getElementById('ir').addEventListener('click', function () {
+    var v = campo.value.trim();
+    if (!v) { campo.focus(); return; }
+    if (N) N.definirServidor(v); else location.href = (/^https?:\/\//i.test(v) ? v : 'http://' + v).replace(/\/+$/, '') + '/motoboy';
+  });
+  campo.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') document.getElementById('ir').click(); });
+</script>
+</body>
+</html>

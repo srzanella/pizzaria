@@ -1,0 +1,126 @@
+<title>Entregador · Pizzaria Pereira</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,700..900,0..100&family=Plus+Jakarta+Sans:wght@500..800&display=swap">
+<style>
+/* Feito para a rua: fundo escuro, letras grandes, botões grandes, contraste alto (sol e noite). */
+:root{
+  color-scheme:dark;
+  --fundo:#07170D;--sup:#0F2B19;--sup-2:#163A23;--linha:#24502F;
+  --texto:#F6EFE0;--texto-2:#B9C7B5;--verde:#2FBF6B;--verde-esc:#0F4D23;--ouro:#E5B23C;--tomate:#F0524A;--creme:#FBF4E6;
+  --f-display:"Fraunces",Georgia,serif;--f-corpo:"Plus Jakarta Sans","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--fundo);color:var(--texto);font:16px/1.45 var(--f-corpo);-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;min-height:100dvh;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ouro);outline-offset:2px;border-radius:8px}
+h1,h2,h3{margin:0;font-family:var(--f-display);line-height:1.1;letter-spacing:-.01em}
+p{margin:0}
+.topo{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(7,23,13,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--linha)}
+.topo img{height:30px;width:auto;background:var(--creme);border-radius:8px;padding:3px 7px}
+.quem{font-weight:800;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rede{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--texto-2)}
+.rede i{width:9px;height:9px;border-radius:50%;background:#6B7A69}
+.rede.on i{background:var(--verde);box-shadow:0 0 0 0 rgba(47,191,107,.6);animation:pulso 2s infinite}
+@keyframes pulso{70%{box-shadow:0 0 0 7px rgba(47,191,107,0)}100%{box-shadow:0 0 0 0 rgba(47,191,107,0)}}
+.menu-b{width:42px;height:42px;border-radius:50%;border:0;background:var(--sup);font-size:22px;line-height:1}
+.menu{position:absolute;right:12px;top:58px;background:var(--sup-2);border-radius:16px;box-shadow:0 20px 40px -10px rgba(0,0,0,.6);padding:6px;display:grid;min-width:230px}
+.menu button{border:0;background:transparent;text-align:left;padding:12px 14px;border-radius:12px;font-weight:700}
+.menu button:hover{background:rgba(255,255,255,.06)}
+.menu small{display:block;padding:6px 14px 8px;color:var(--texto-2);font-size:12px}
+main{padding:16px 14px 90px;max-width:620px;margin:0 auto;display:grid;gap:18px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--creme);color:#1E1B16;padding:12px 18px;border-radius:999px;font-weight:800;font-size:14.5px;z-index:50;opacity:0;pointer-events:none;transition:all .3s;max-width:calc(100% - 28px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* pareamento */
+.par{display:grid;gap:16px;text-align:center;padding-top:10px}
+.par h1{font-size:32px}
+.par p{color:var(--texto-2)}
+.arte{height:150px;display:flex;align-items:center;justify-content:center}
+.arte svg{height:100%;width:auto;max-width:100%;overflow:visible;flex:none}
+.estrada{animation:estrada .7s linear infinite}
+@keyframes estrada{to{transform:translateX(-40px)}}
+.moto-pula{animation:pula .35s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+@keyframes pula{to{transform:translateY(-2px) rotate(-1.5deg)}}
+.cod{position:relative;width:min(340px,100%);height:66px;margin:0 auto}
+.cod input{position:absolute;inset:0;z-index:2;width:100%;height:100%;color:transparent;caret-color:transparent;background:transparent;border:0;font-size:16px;text-indent:-999px;outline:none}
+.caixas{position:absolute;inset:0;display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.caixas span{display:grid;place-items:center;border-radius:14px;background:var(--sup);box-shadow:inset 0 0 0 2px var(--linha);font:800 30px/1 var(--f-display);transition:all .2s}
+.caixas span.cheio{box-shadow:inset 0 0 0 2px var(--verde)}
+.caixas span.atual{box-shadow:inset 0 0 0 2.5px var(--ouro)}
+.caixas.erro span{box-shadow:inset 0 0 0 2px var(--tomate);color:var(--tomate)}
+.erro-msg{color:var(--tomate);font-weight:700;min-height:1.3em}
+.b{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 20px;border-radius:16px;border:0;background:var(--sup-2);color:var(--texto);font-weight:800;font-size:15px;text-decoration:none;box-shadow:inset 0 0 0 1.5px var(--linha);transition:transform .12s}
+.b:active{transform:scale(.97)}
+.b svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.b.prim{background:var(--verde);color:#062012;box-shadow:0 10px 24px -10px rgba(47,191,107,.7)}
+.b.largo{width:100%}
+.b[disabled]{opacity:.55}
+
+/* jornada */
+.jornada{display:grid;justify-items:center;gap:14px;background:radial-gradient(120% 90% at 50% 0%,#14402A 0%,var(--sup) 70%);border-radius:28px;padding:22px 16px 18px;box-shadow:inset 0 0 0 1px var(--linha)}
+.jbtn{position:relative;width:196px;height:196px;border-radius:50%;border:0;display:grid;place-items:center;align-content:center;gap:4px;background:radial-gradient(circle at 50% 35%,#3AD07B,#1E9550);color:#062012;font-weight:800;box-shadow:0 18px 40px -14px rgba(47,191,107,.75),inset 0 -6px 0 rgba(0,0,0,.18);touch-action:none;user-select:none;-webkit-user-select:none}
+.jbtn::before{content:"";position:absolute;inset:-12px;border-radius:50%;border:3px solid rgba(47,191,107,.35);animation:respira 2.4s ease-in-out infinite}
+@keyframes respira{50%{transform:scale(1.06);opacity:.4}}
+.jbtn svg.liga{width:46px;height:46px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+.jbtn b{font-size:19px;line-height:1.15}
+.jbtn small{font-size:12.5px;font-weight:700;opacity:.8}
+.jbtn.on{background:radial-gradient(circle at 50% 35%,#1B4D2D,#0F2B19);color:var(--texto);box-shadow:inset 0 0 0 3px var(--verde),0 18px 40px -16px rgba(0,0,0,.8)}
+.jbtn.on::before{border-color:rgba(47,191,107,.5);animation:radar 2s ease-out infinite}
+@keyframes radar{0%{transform:scale(.95);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+.jbtn .tempo{font:800 34px/1 var(--f-display);font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.jbtn .anel{position:absolute;inset:-7px;width:calc(100% + 14px);height:calc(100% + 14px);transform:rotate(-90deg);pointer-events:none}
+.jbtn .anel circle{fill:none;stroke:var(--tomate);stroke-width:7;stroke-linecap:round;stroke-dasharray:660;stroke-dashoffset:660}
+.jinfo{display:grid;gap:6px;justify-items:center;text-align:center;font-size:14px;color:var(--texto-2)}
+.jinfo .linha{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px}
+.jinfo b{color:var(--texto)}
+.gps{display:inline-flex;align-items:center;gap:8px}
+.gps i{width:10px;height:10px;border-radius:50%;background:#6B7A69}
+.gps.ok i{background:var(--verde);animation:pulso 1.6s infinite}
+.gps.fraco i{background:var(--ouro)}
+.modo{font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(47,191,107,.14);color:#8FE6B1}
+.modo.web{background:rgba(229,178,60,.14);color:#F1CF83}
+.aviso{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:0;border-radius:16px;padding:12px 14px;background:rgba(229,178,60,.14);color:#F6DFA5;font-weight:700;font-size:14px}
+
+/* entregas */
+.sec{display:flex;align-items:center;gap:10px;font-size:22px}
+.sec .n{font:800 14px/1 var(--f-corpo);background:var(--sup-2);border-radius:999px;padding:5px 10px}
+.vazia{color:var(--texto-2);text-align:center;padding:26px 14px;border:2px dashed var(--linha);border-radius:22px}
+.ent{background:var(--sup);border-radius:22px;padding:16px;display:grid;gap:10px;box-shadow:inset 0 0 0 1px var(--linha)}
+.ent.rua{box-shadow:inset 0 0 0 2px var(--verde)}
+.ent header{display:flex;align-items:center;gap:10px}
+.ent .codigo{font:800 20px/1 var(--f-display)}
+.st{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:4px 10px;border-radius:999px;background:var(--sup-2);color:var(--texto-2)}
+.st.saiu{background:var(--verde);color:#062012}
+.st.forno{background:rgba(240,82,74,.18);color:#FFB3AE}
+.dist{margin-left:auto;font-weight:800;font-size:15px;color:#8FE6B1;white-space:nowrap}
+.ent h3{font-size:24px}
+.end{font-size:17px;font-weight:700;line-height:1.35}
+.end small{display:block;font-size:14px;font-weight:600;color:var(--texto-2);margin-top:2px}
+.cobrar{font-size:15px;font-weight:800;padding:10px 12px;border-radius:14px;background:rgba(229,178,60,.14);color:#F6DFA5}
+.cobrar.pago{background:rgba(47,191,107,.14);color:#8FE6B1}
+.obs{font-size:14px;color:#F6DFA5}
+.itens summary{cursor:pointer;color:var(--texto-2);font-weight:700;font-size:14px}
+.itens p{font-size:14px;margin-top:6px;color:var(--texto-2)}
+.acoes{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.acoes .b{min-height:48px;padding:0 10px;font-size:14px}
+.acao-principal{position:relative;overflow:hidden}
+.acao-principal .enche{position:absolute;inset:0;background:rgba(255,255,255,.28);transform-origin:left;transform:scaleX(0)}
+.feito{display:grid;justify-items:center;gap:6px;padding:10px;color:#8FE6B1;font-weight:800}
+.feito svg{width:64px;height:64px;fill:none;stroke:var(--verde);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.feito circle{stroke-dasharray:160;stroke-dashoffset:160;animation:traco .55s forwards}
+.feito path{stroke-dasharray:44;stroke-dashoffset:44;animation:traco .3s .45s forwards}
+@keyframes traco{to{stroke-dashoffset:0}}
+.carregando{color:var(--texto-2);text-align:center;padding:40px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<div id="app">
+  <header class="topo"><img id="logo" alt=""><span class="quem" id="quem">Entregador</span><span class="rede" id="rede" role="status"><i></i><span>conectando</span></span><button type="button" class="menu-b" id="menuB" aria-label="Menu" aria-haspopup="menu" aria-expanded="false">⋮</button></header>
+  <div class="menu" id="menu" role="menu" hidden></div>
+  <main id="tela"><p class="carregando">Carregando…</p></main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>

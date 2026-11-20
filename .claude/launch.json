@@ -1,0 +1,30 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "prototipo",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "prototipo/serve.js"
+      ],
+      "port": 5174
+    },
+    {
+      "name": "pizzaiolo-teste",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "prototipo/testes/servir.js"
+      ],
+      "port": 5175
+    },
+    {
+      "name": "servidor",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "--disable-warning=ExperimentalWarning",
+        "prototipo/server.js"
+      ],
+      "port": 5180
+    }
+  ]
+}

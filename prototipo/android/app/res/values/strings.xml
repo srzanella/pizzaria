@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_nome">Entregador Pereira</string>
+    <!-- trocado pelo gerar-apk.js na hora de gerar o APK -->
+    <string name="servidor_padrao">%%SERVIDOR%%</string>
+</resources>

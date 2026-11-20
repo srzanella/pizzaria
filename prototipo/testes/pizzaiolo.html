@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pizzaiolo: teste da cena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..900,0..100&family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<style>
+:root{--verde:#0F4D23;--tomate:#C1121F;--creme:#FBF4E6;--massa:#F3E6CC;--texto:#1E1B16;--texto-2:#6B5E4E;--linha:#E5D6BA;--ouro:#C8952E;
+  --f-display:"Fraunces",Georgia,serif;--f-corpo:"Plus Jakarta Sans","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--creme);color:var(--texto);font-family:var(--f-corpo)}
+button{font:inherit;cursor:pointer}
+h1,h2{font-family:var(--f-display);font-variation-settings:"SOFT" 100;color:var(--verde);margin:0;letter-spacing:-.02em}
+
+/* ---- montador simulado ---- */
+.mock{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:center;max-width:1180px;margin:0 auto;padding:48px 24px 140px}
+.mock .palco{position:relative;aspect-ratio:1;max-width:460px;width:100%;margin:0 auto}
+.mock .tabua{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 35%,#C99A5E,#A8743D 70%,#8E5F2F);box-shadow:0 30px 60px -30px rgba(70,40,10,.6),inset 0 0 0 10px rgba(255,255,255,.06)}
+.mock .tabua img{position:absolute;inset:7%;width:86%;height:86%}
+.mock .card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 20px 50px -30px rgba(70,40,10,.45);display:grid;gap:10px}
+.mock .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--tomate)}
+.mock h2{font-size:clamp(28px,4vw,40px)}
+.mock p{margin:0;color:var(--texto-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;border:0;background:var(--tomate);color:#fff;font-weight:800;font-size:16px;box-shadow:0 8px 20px -8px rgba(193,18,31,.6),inset 0 -2px 0 rgba(0,0,0,.15)}
+.btn:hover{background:#9E0E19}
+.fab{position:fixed;right:20px;bottom:20px;z-index:20;display:flex;align-items:center;gap:12px;min-height:58px;padding:0 22px 0 8px;border-radius:999px;border:0;background:var(--verde);color:#fff;font-weight:800;box-shadow:0 14px 30px -10px rgba(15,77,35,.7)}
+.fab .qtd{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--tomate);font-size:17px}
+@media (max-width:760px){.mock{grid-template-columns:1fr;gap:24px;padding-top:24px}.mock .palco{max-width:300px}}
+
+/* ---- cena do forno ---- */
+.assar{position:fixed;inset:0;z-index:50;display:grid;place-items:center;align-content:center;gap:2px;padding:16px;overflow:hidden;cursor:pointer;background:#FBF4E6;-webkit-tap-highlight-color:transparent}
+/* gradiente numa camada própria: a íris (clip-path animado) não obriga a repintá-lo a cada quadro */
+.assar-fundo{position:absolute;inset:0;z-index:0;pointer-events:none;will-change:transform;background:radial-gradient(ellipse 60% 55% at 64% 52%,#FCE6C4 0%,rgba(252,230,196,0) 70%),linear-gradient(#FBF4E6,#F6E9D2)}
+.assar>:not(.assar-fundo){position:relative;z-index:1}
+.assar[hidden]{display:none}
+.assar:focus{outline:none}
+.cena{display:block;width:min(860px,100%);height:auto;overflow:visible}
+.msgs{position:relative;height:70px;width:100%;text-align:center}
+.msgs small{display:block;margin-top:4px;padding:0 16px;font-family:var(--f-corpo);font-size:15px;font-weight:700;color:var(--texto-2)}
+.msgs span{position:absolute;left:0;right:0;font-family:var(--f-display);font-variation-settings:"SOFT" 100;font-size:clamp(26px,4vw,34px);font-weight:850;color:var(--verde);opacity:0}
+.pula{font-size:12.5px;font-weight:700;color:var(--texto-2);opacity:.7}
+@media (max-width:560px){.assar{padding:16px 0}.cena{width:100vw}}
+
+/* ---- controles do teste (não fazem parte do design) ---- */
+.ctrl{position:fixed;left:12px;bottom:12px;z-index:100;display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:calc(100vw - 24px);padding:10px 12px;border-radius:14px;background:rgba(30,27,22,.88);color:#fff;font-size:13px;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.ctrl button,.ctrl select{border:0;border-radius:8px;padding:6px 10px;background:#fff;color:#1E1B16;font-weight:700}
+.ctrl input[type=range]{width:min(260px,40vw)}
+.ctrl label{display:flex;align-items:center;gap:5px;cursor:pointer}
+.ctrl .tempo{font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+.ctrl a{color:#FFD58A}
+
+/* ---- folha de poses ---- */
+.folha{display:none;padding:20px;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.folha figure{margin:0;background:#fff;border-radius:16px;padding:8px;box-shadow:0 10px 30px -22px rgba(70,40,10,.5)}
+.folha svg{display:block;width:100%;height:auto;overflow:hidden}
+.folha figcaption{font-size:13px;font-weight:700;color:var(--texto-2);padding:4px 6px 2px}
+body.modo-folha .mock,body.modo-folha .fab{display:none}
+body.modo-folha .folha{display:grid}
+
+/* ---- forninho ---- */
+.forno-teste{display:none;padding:24px;gap:22px;max-width:1100px;margin:0 auto}
+.forno-teste .linha{display:flex;flex-wrap:wrap;align-items:flex-end;gap:28px}
+.forno-teste figure{margin:0;display:grid;gap:6px;justify-items:start}
+.forno-teste figcaption{font-size:13px;font-weight:700;color:var(--texto-2)}
+.forno-teste svg{display:block;height:auto;overflow:hidden}
+.forno-teste .botoes{display:flex;flex-wrap:wrap;gap:8px}
+.forno-teste .botoes button{border:0;border-radius:999px;padding:9px 16px;background:#fff;box-shadow:inset 0 0 0 2px var(--verde);color:var(--verde);font-weight:800}
+body.modo-forno .mock,body.modo-forno .fab,body.modo-forno .ctrl{display:none}
+body.modo-forno .forno-teste{display:grid}
+</style>
+</head>
+<body>
+<main class="mock">
+  <div class="palco"><div class="tabua"><img id="pizzaMont" src="pizza-exemplo.svg" alt="Pizza portuguesa montada"></div></div>
+  <div class="card">
+    <span class="eyebrow">Página de teste</span>
+    <h2>Portuguesa</h2>
+    <p>Grande · borda tradicional</p>
+    <p style="font-size:14px">Montador simulado só para testar a cena do forno. Clique no botão para ver a animação.</p>
+    <button class="btn" id="adicionar" type="button">Adicionar ao pedido <span aria-hidden="true">+</span></button>
+  </div>
+</main>
+<button class="fab" id="fab" type="button"><span class="qtd" id="qtd">1</span>Ver pedido</button>
+
+<div class="assar" id="assar" hidden role="dialog" aria-modal="true" aria-labelledby="msgA" tabindex="-1">
+  <div class="assar-fundo" aria-hidden="true"></div>
+  <svg class="cena" id="cena" viewBox="0 0 400 250" aria-hidden="true"></svg>
+  <div class="msgs"><span id="msgA">Pro forno!</span><span id="msgB" aria-live="polite">Separada pro forno!<small>Finalize o pedido pra gente começar a assar.</small></span></div>
+  <span class="pula">Toque para pular</span>
+</div>
+
+<section class="folha" id="folha" aria-label="Folha de poses"></section>
+
+<section class="forno-teste" id="fornoTeste" aria-label="Forninho">
+  <h2>Forninho do montador</h2>
+  <div class="linha">
+    <figure><svg width="120" id="fz1"></svg><figcaption>celular (120 px)</figcaption></figure>
+    <figure><svg width="210" id="fz2"></svg><figcaption>computador (210 px)</figcaption></figure>
+    <figure><svg width="620" id="fz3"></svg><figcaption>ampliado (620 px)</figcaption></figure>
+  </div>
+  <div class="botoes">
+    <button type="button" data-r="sabor">Escolheu sabor</button>
+    <button type="button" data-r="tamanho" data-v="broto">Tamanho broto</button>
+    <button type="button" data-r="tamanho" data-v="grande">Tamanho grande</button>
+    <button type="button" data-r="borda" data-v="#FFF7E4">Borda catupiry</button>
+    <button type="button" data-r="borda" data-v="#E8892B">Borda cheddar</button>
+    <button type="button" data-r="borda" data-v="">Sem borda</button>
+    <button type="button" data-r="passo">Avançou passo</button>
+    <button type="button" data-r="oi">Oi (abriu o montador)</button>
+    <a href="?" style="align-self:center;font-weight:700">voltar ao teste</a>
+  </div>
+</section>
+
+<aside class="ctrl" aria-label="Controles do teste">
+  <button id="cRodar" type="button">▶ Rodar</button>
+  <select id="cVel" aria-label="Velocidade"><option value="1">1×</option><option value=".5">0,5×</option><option value=".25">0,25×</option><option value=".1">0,1×</option></select>
+  <input id="cTempo" type="range" min="0" max="1000" value="0" aria-label="Linha do tempo">
+  <span class="tempo" id="cT">0,00s</span>
+  <label><input id="cDebug" type="checkbox"> esqueleto</label>
+  <a href="?folha=1" id="cFolha">folha de poses</a>
+  <a href="?forninho=1">forninho</a>
+</aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="pizza-exemplo.js"></script>
+<script src="../src/pizzaiolo.js"></script>
+<script>
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const svg = $('#cena'), veu = $('#assar'), orig = $('#pizzaMont');
+  const cena = PizzaioloCena.criar(svg);
+  let pizzaURL = null, mestre = null, arrastando = false;
+  const pronto = PizzaioloCena.rasterizar(window.PIZZA_SVG, 640).then((u) => { pizzaURL = u; cena.pizzaImg.setAttribute('href', u); });
+
+  function montar() {
+    if (mestre) { mestre.kill(); mestre = null; }
+    // a íris já nasce do tamanho da pizza: nenhum quadro mostra a cena inteira antes da hora
+    const de = orig.getBoundingClientRect();
+    const cx = de.left + de.width / 2, cy = de.top + de.height / 2, r0 = de.width / 2 * 0.9;
+    gsap.set(veu, { clipPath: `circle(${r0}px at ${cx}px ${cy}px)` });
+    veu.hidden = false;
+    // celular: câmera fechada que acompanha a ação; computador: cena inteira
+    cena.camera = matchMedia('(max-width: 560px)').matches;
+    Object.assign(cena.S, PizzaioloCena.poseInicial()); cena.voo = null; cena.render();
+    const r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+    const kx = vb.width / r.width, ky = vb.height / r.height;
+    cena.voo = { x: vb.x + (cx - r.left) * kx, y: vb.y + (cy - r.top) * ky, s: de.width * kx / 100, h: 0 };
+    cena.voo.h = 30 + Math.abs(cena.voo.x - 230) * 0.12;
+    const { tl } = PizzaioloCena.linhaDoTempo(cena, { fim: 3.45 });
+    const W = innerWidth, H = innerHeight;
+    const r1 = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy)) + 20;
+    const fb = $('#fab').getBoundingClientRect(), fx = fb.left + 29, fy = fb.top + fb.height / 2;
+    const m = gsap.timeline({ paused: true, onUpdate: sincronizaControles, onComplete: fim });
+    m.set(veu, { clipPath: `circle(${r0}px at ${cx}px ${cy}px)` }, 0)
+      .set(orig, { visibility: 'hidden' }, 0)
+      .to(veu, { clipPath: `circle(${r1}px at ${cx}px ${cy}px)`, duration: 0.6, ease: 'power2.inOut' }, 0)
+      .add(tl.tweenFromTo(0, tl.duration(), { ease: 'none' }), 0)
+      .fromTo('#msgA', { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: 'power3.out' }, 0.35)
+      .to('#msgA', { y: -14, opacity: 0, duration: 0.18, ease: 'power2.in' }, 2.18)
+      .fromTo('#msgB', { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: 'back.out(2)' }, 2.38)
+      .to(veu, { clipPath: `circle(0px at ${fx}px ${fy}px)`, duration: 0.5, ease: 'power2.in' }, 3.4)
+      .set(orig, { visibility: 'visible' }, 3.9)
+      .fromTo('#fab', { scale: 1 }, { scale: 1.12, duration: 0.12, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, 3.87)
+      .call(() => { $('#qtd').textContent = +$('#qtd').textContent + 1; }, null, 3.87);
+    m.timeScale(+$('#cVel').value);
+    mestre = m;
+    return m;
+  }
+  function fim() { veu.hidden = true; gsap.set(veu, { clearProps: 'clipPath' }); }
+  function tocar() { pronto.then(() => { const m = montar(); veu.focus({ preventScroll: true }); m.play(0); }); }
+  function sincronizaControles() {
+    if (!mestre || arrastando) return;
+    $('#cTempo').value = Math.round(mestre.progress() * 1000);
+    $('#cT').textContent = mestre.time().toFixed(2).replace('.', ',') + 's';
+  }
+
+  $('#adicionar').addEventListener('click', tocar);
+  $('#cRodar').addEventListener('click', tocar);
+  $('#cVel').addEventListener('change', (e) => { if (mestre) mestre.timeScale(+e.target.value); });
+  $('#cDebug').addEventListener('change', (e) => cena.debug(e.target.checked));
+  $('#cTempo').addEventListener('input', (e) => {
+    pronto.then(() => {
+      if (!mestre) montar();
+      arrastando = true;
+      mestre.pause(); mestre.progress(+e.target.value / 1000);
+      $('#cT').textContent = mestre.time().toFixed(2).replace('.', ',') + 's';
+      if (mestre.progress() >= 1) veu.hidden = false;
+      arrastando = false;
+    });
+  });
+  veu.addEventListener('click', (e) => { if (mestre && mestre.isActive()) mestre.progress(1); });
+  veu.addEventListener('keydown', (e) => { if ((e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') && mestre) { e.preventDefault(); mestre.progress(1); } });
+
+  // ---- folha de poses: o pizzaiolo grande em momentos-chave ----
+  if (/folha=1/.test(location.search)) {
+    document.body.classList.add('modo-folha');
+    $('#cFolha').textContent = 'voltar ao teste'; $('#cFolha').href = location.pathname;
+    const momentos = [[0, 'Parado'], [0.8, 'Antecipa a pegada'], [0.92, 'Pegada (a pá cede)'], [1.18, 'Passo 1'], [1.52, 'Passo 2'], [1.9, 'Avanço'], [2.2, 'Enforna'], [2.35, 'Puxada'], [3.1, 'Joinha']];
+    pronto.then(() => momentos.forEach(([t, nome]) => {
+      const fig = document.createElement('figure');
+      const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      s.setAttribute('class', 'cena');
+      fig.appendChild(s);
+      const cap = document.createElement('figcaption'); cap.textContent = t.toFixed(2).replace('.', ',') + 's · ' + nome; fig.appendChild(cap);
+      $('#folha').appendChild(fig);
+      const c = PizzaioloCena.criar(s);
+      c.pizzaImg.setAttribute('href', pizzaURL);
+      c.voo = { x: 40, y: 120, s: 0.7, h: 40 };
+      const { tl } = PizzaioloCena.linhaDoTempo(c);
+      tl.time(t); c.tempo = t; c.render();
+      const x = c.S.x;
+      s.setAttribute('viewBox', (x - 70) + ' 58 210 176');
+    }));
+  }
+  // ---- forninho: três tamanhos lado a lado, botões disparam as reações ----
+  const forninhos = [];
+  if (/forninho=1/.test(location.search)) {
+    document.body.classList.add('modo-forno');
+    ['#fz1', '#fz2', '#fz3'].forEach((id) => { const f = PizzaioloCena.criarForninho($(id)); f.iniciar(); forninhos.push(f); });
+    document.querySelector('.forno-teste .botoes').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-r]');
+      if (b) forninhos.forEach((f) => f.reagir(b.dataset.r, b.dataset.v));
+    });
+  }
+  window.__teste = { cena, montar: () => pronto.then(() => { montar(); }), get mestre() { return mestre; }, forninhos };
+})();
+</script>
+</body>
+</html>

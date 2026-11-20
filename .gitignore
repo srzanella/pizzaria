@@ -1,0 +1,15 @@
+# Configuração local do Claude Code (permissões desta máquina)
+.claude/settings.local.json
+
+# Vídeo de demonstração: entram só os scripts, o roteiro e as instruções.
+# Ferramentas baixadas (ffmpeg, piper, voz), áudios, gravações e o vídeo final ficam fora.
+video/ferramentas/
+video/trabalho/
+video/saida/
+video/amostras-voz/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+*.log

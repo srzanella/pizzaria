@@ -1,0 +1,70 @@
+name: pizzaria-pereira
+services:
+  banco:
+    image: postgres:17-alpine
+    container_name: pizzaria-pereira-banco
+    environment:
+      POSTGRES_DB: pizzaria
+      POSTGRES_USER: pizzaria
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no arquivo .env}
+    volumes:
+      - banco:/var/lib/postgresql/data
+    ports:
+      # só neste computador (127.0.0.1), para abrir o banco no DBeaver/pgAdmin ou rodar o server.js fora do Docker
+      - "127.0.0.1:5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pizzaria -d pizzaria"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  # caixa de entrada de testes: os emails com o código de acesso dos clientes aparecem em http://localhost:8025
+  # (nada sai para a internet). Em produção, troque SMTP_URL por um provedor de verdade e tire este serviço.
+  correio:
+    image: axllent/mailpit:latest
+    container_name: pizzaria-pereira-correio
+    ports:
+      - "127.0.0.1:8025:8025"
+    restart: unless-stopped
+
+  site:
+    build: .
+    container_name: pizzaria-pereira
+    depends_on:
+      banco:
+        condition: service_healthy
+      correio:
+        condition: service_started
+    ports:
+      # aberto na rede local para testar no celular
+      - "8090:8080"
+    environment:
+      DATABASE_URL: postgres://pizzaria:${POSTGRES_PASSWORD}@banco:5432/pizzaria
+      # endereço público do site, usado nos links "acompanhe seu pedido" (ex.: https://pizzariapereira.com.br).
+      # Vazio: usa o endereço que o cliente acessou.
+      SITE_URL: ""
+      # envio do código de acesso dos clientes: quem manda é a gestão (Configurações → Email dos clientes).
+      # Estas duas só valem enquanto a gestão não tiver email configurado (no protótipo, o Mailpit acima).
+      SMTP_URL: ${SMTP_URL:-smtp://correio:1025}
+      EMAIL_DE: ${EMAIL_DE:-Pizzaria Pereira <nao-responda@pizzariapereira.com.br>}
+      # cifra a senha do email salva pela gestão; a mesma em todas as instâncias (fica no .env)
+      CHAVE_SEGREDOS: ${CHAVE_SEGREDOS:-}
+      # "Continuar com Google": liga na gestão (Configurações → Login com Google). Este só vale enquanto a gestão
+      # não tiver nada salvo.
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      # endereço que o celular do entregador usa (QR da gestão); vazio: o endereço aberto na gestão
+      ENDERECO_REDE: ${ENDERECO_REDE:-}
+      # senha do primeiro "admin" (só na primeira subida, com a equipe vazia); depois vale a da gestão
+      ADMIN_SENHA_INICIAL: ${ADMIN_SENHA_INICIAL:-}
+      # aqui o site é acessado direto (sem proxy na frente): o X-Forwarded-For de quem chama é ignorado.
+      # No servidor de produção (servidor/docker-compose.yml) o Caddy fica na frente e este valor é 1.
+      PROXY_CONFIAVEL: "0"
+    volumes:
+      # banco antigo (SQLite): importado para o PostgreSQL na primeira subida e renomeado; depois pode sair daqui
+      - dados:/app/dados
+    restart: unless-stopped
+
+volumes:
+  banco:
+  dados:

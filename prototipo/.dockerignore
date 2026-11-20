@@ -1,0 +1,13 @@
+*
+!dist/
+!server.js
+!demo.js
+!contas.js
+!entregadores.js
+!email.js
+!package.json
+!package-lock.json
+!enderecos.js
+!importa-ibge.js
+!equipe.js
+!precos.js

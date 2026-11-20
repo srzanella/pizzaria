@@ -1,0 +1,15 @@
+# dependências e arquivos gerados (o build.js e o servidor.js geram de novo)
+node_modules/
+dist/
+/index.html
+servidor/saida/
+android/saida/
+backups/
+dados/
+
+# SEGREDOS: nunca no Git
+.env
+servidor/producao.env
+servidor/destino.json
+CREDENCIAIS-*.md
+android/assinatura/

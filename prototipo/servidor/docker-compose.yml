@@ -1,0 +1,95 @@
+# Produção (servidor na internet). O servidor.js publicar copia este arquivo para /opt/pizzaria/docker-compose.yml
+# junto com o .env (gerado em servidor/producao.env), o Caddyfile e o código em app/.
+#
+#   internet ──443/80──▶ caddy (https automático) ──▶ site (Node, porta 8080 só na rede interna) ──▶ banco
+#                                                                     backup (cópia diária do banco em ./backups)
+#
+# Nenhuma porta do site ou do banco fica aberta para a internet: só o Caddy (80 e 443).
+name: pizzaria-pereira
+
+x-logs: &logs
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "5"
+
+services:
+  banco:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: pizzaria
+      POSTGRES_USER: pizzaria
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+    volumes:
+      - banco:/var/lib/postgresql/data
+    shm_size: 128mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pizzaria -d pizzaria"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+    logging: *logs
+
+  site:
+    build: ./app
+    depends_on:
+      banco:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://pizzaria:${POSTGRES_PASSWORD}@banco:5432/pizzaria
+      SITE_URL: https://${DOMINIO:?defina DOMINIO no .env}
+      ENDERECO_REDE: https://${DOMINIO}
+      # o Caddy fica na frente: o IP do cliente vem no X-Forwarded-For que ELE escreve
+      PROXY_CONFIAVEL: "1"
+      CHAVE_SEGREDOS: ${CHAVE_SEGREDOS:?defina CHAVE_SEGREDOS no .env}
+      # só na primeira subida (equipe vazia); depois a senha do admin é a da gestão
+      ADMIN_SENHA_INICIAL: ${ADMIN_SENHA_INICIAL:-}
+      # email e Google se configuram na gestão (Configurações); estes só valem enquanto a gestão não tiver nada
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      SMTP_URL: ${SMTP_URL:-}
+      EMAIL_DE: ${EMAIL_DE:-}
+      PG_POOL: ${PG_POOL:-10}
+    volumes:
+      - ./dados-ibge:/app/dados-ibge:ro
+    restart: unless-stopped
+    logging: *logs
+
+  caddy:
+    image: caddy:2-alpine
+    depends_on:
+      - site
+    ports:
+      - "${PORTA_HTTP:-80}:80"
+      - "${PORTA_HTTPS:-443}:443"
+      - "${PORTA_HTTPS:-443}:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_dados:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    logging: *logs
+
+  backup:
+    image: postgres:17-alpine
+    depends_on:
+      banco:
+        condition: service_healthy
+    environment:
+      PGHOST: banco
+      PGUSER: pizzaria
+      PGDATABASE: pizzaria
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      BACKUP_DIAS: ${BACKUP_DIAS:-14}
+      BACKUP_HORA: ${BACKUP_HORA:-4}
+    volumes:
+      - ./backups:/backups
+      - ./backup.sh:/backup.sh:ro
+    entrypoint: ["sh", "/backup.sh"]
+    restart: unless-stopped
+    logging: *logs
+
+volumes:
+  banco:
+  caddy_dados:
+  caddy_config:

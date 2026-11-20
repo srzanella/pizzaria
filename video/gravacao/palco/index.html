@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Palco do vídeo · Pizzaria Pereira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,500..900,0..100;1,9..144,500..900,0..100&family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<style>
+:root{--verde:#0F4D23;--verde-2:#0B3A1A;--verde-claro:#E4EEDF;--tomate:#C1121F;--ouro:#C8952E;--creme:#FBF4E6;--texto:#1E1B16;--texto-2:#6B5E4E;
+  --f-display:"Fraunces",Georgia,serif;--f-corpo:"Plus Jakarta Sans","Segoe UI",system-ui,sans-serif;--ease:cubic-bezier(.2,.8,.2,1)}
+*{box-sizing:border-box}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--creme);font-family:var(--f-corpo);color:var(--texto)}
+/* fundo: manchas suaves que andam devagar */
+.fundo{position:absolute;inset:0;overflow:hidden;background:radial-gradient(1200px 800px at 15% 10%,#FFF9EE,transparent 70%),linear-gradient(160deg,#FBF4E6,#F3EADB)}
+.mancha{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;animation:anda 26s ease-in-out infinite alternate}
+.m1{width:760px;height:760px;background:#cfe0c6;left:-180px;top:-220px}
+.m2{width:640px;height:640px;background:#f6d2c8;right:-160px;bottom:-200px;animation-duration:31s}
+.m3{width:520px;height:520px;background:#f3dfb1;left:55%;top:-160px;animation-duration:37s}
+@keyframes anda{to{transform:translate(120px,80px) scale(1.12)}}
+/* aparelhos */
+.dev{position:absolute;left:0;top:0;transform-origin:0 0;transition:transform 1.1s var(--ease),opacity .7s var(--ease);will-change:transform}
+.dev.fora{opacity:0;pointer-events:none}
+.dev.escondido{visibility:hidden}
+.desk{width:1600px;height:924px;border-radius:18px;background:#fff;box-shadow:0 2px 6px rgba(40,25,5,.08),0 40px 90px -30px rgba(40,25,5,.45);overflow:hidden}
+.desk .barra{height:44px;background:#F1EADB;display:flex;align-items:center;gap:8px;padding:0 18px;border-bottom:1px solid #E6DCC8}
+.desk .bola{width:12px;height:12px;border-radius:50%;background:#E3D6BF}
+.desk .url{margin-left:24px;flex:1;max-width:760px;height:28px;border-radius:14px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 14px;font-size:15px;color:var(--texto-2);font-weight:600}
+.desk .url svg{width:14px;height:14px}
+.desk iframe{display:block;width:1600px;height:880px;border:0;background:#fff}
+.cel{width:422px;height:876px;border-radius:62px;background:#141414;padding:16px;box-shadow:0 2px 6px rgba(40,25,5,.12),0 46px 90px -30px rgba(40,25,5,.55),inset 0 0 0 2px #2a2a2a}
+.cel iframe{display:block;width:390px;height:844px;border:0;border-radius:47px;background:#fff}
+.cel .nome{position:absolute;left:0;right:0;top:-46px;text-align:center;font-weight:800;font-size:22px;color:var(--verde);letter-spacing:.02em;opacity:0;transition:opacity .6s}
+.cel.rotulo .nome{opacity:1}
+/* títulos */
+.titulo{position:absolute;inset:0;display:grid;place-items:center;text-align:center;transition:opacity .8s var(--ease),transform 1s var(--ease)}
+.titulo.fora{opacity:0;transform:scale(1.04);pointer-events:none}
+.titulo .caixa{display:grid;justify-items:center;gap:26px}
+.titulo img{height:210px;filter:drop-shadow(0 18px 30px rgba(60,30,5,.18))}
+.titulo h1{margin:0;font-family:var(--f-display);font-weight:800;font-size:96px;line-height:1.02;color:var(--verde);letter-spacing:-.01em}
+.titulo h1 em{font-style:italic;color:var(--tomate)}
+.titulo p{margin:0;font-size:30px;color:var(--texto-2);font-weight:600}
+.titulo p.aviso-ia{font-size:19px;font-weight:600;color:#9A8C7A;margin-top:-4px}
+.pilares{display:flex;gap:22px;margin-top:10px}
+.pilar{display:flex;align-items:center;gap:14px;background:#fff;border-radius:999px;padding:14px 28px 14px 16px;font-weight:800;font-size:26px;color:var(--verde-2);box-shadow:0 14px 34px -18px rgba(60,30,5,.5);opacity:0;transform:translateY(24px) scale(.96);transition:opacity .6s var(--ease),transform .7s var(--ease)}
+.pilar.on{opacity:1;transform:none}
+.pilar i{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--verde);color:#fff}
+.pilar i svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pilar:nth-child(2) i{background:var(--tomate)}.pilar:nth-child(3) i{background:var(--ouro)}
+.anima-entra{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform 1s var(--ease)}
+.titulo:not(.fora) .anima-entra{opacity:1;transform:none}
+.titulo:not(.fora) .anima-entra.d2{transition-delay:.25s}.titulo:not(.fora) .anima-entra.d3{transition-delay:.5s}
+/* faixa (legenda de destaque) */
+.faixa{position:absolute;left:84px;bottom:40px;display:flex;align-items:center;gap:16px;background:var(--verde);color:#fff;border-radius:18px;padding:16px 30px 16px 22px;font-weight:800;font-size:31px;box-shadow:0 20px 40px -18px rgba(11,58,26,.6);transform:translateX(calc(-100% - 160px));transition:transform .8s var(--ease);z-index:20}
+.faixa.on{transform:none}
+.faixa b{width:10px;height:38px;border-radius:5px;background:var(--tomate);flex:none}
+/* texto ao lado do celular */
+.lado{position:absolute;left:930px;top:250px;width:860px;display:grid;gap:34px;transition:opacity .6s var(--ease)}
+.lado.fora{opacity:0}
+.lado h2{margin:0;font-family:var(--f-display);font-weight:800;font-size:76px;line-height:1.02;color:var(--verde);letter-spacing:-.01em}
+.lado h2 em{font-style:italic;color:var(--tomate)}
+.lado ul{list-style:none;margin:0;padding:0;display:grid;gap:22px}
+.lado li{display:flex;gap:18px;align-items:center;font-size:34px;font-weight:700;color:var(--texto);opacity:.22;transform:translateX(-14px);transition:opacity .6s var(--ease),transform .6s var(--ease),color .3s}
+.lado li.on{opacity:1;transform:none}
+.lado li i{width:46px;height:46px;border-radius:50%;background:var(--verde-claro);color:var(--verde);display:grid;place-items:center;flex:none;font-style:normal;font-size:24px;font-weight:900;transition:background .3s,color .3s}
+.lado li.on i{background:var(--verde);color:#fff}
+/* mensagem do WhatsApp (balão genérico) */
+.zap{position:absolute;left:930px;top:120px;width:720px;background:#fff;border-radius:26px;box-shadow:0 30px 70px -30px rgba(40,25,5,.55);overflow:hidden;transform:translateY(40px);opacity:0;transition:opacity .7s var(--ease),transform .9s var(--ease)}
+.zap.on{opacity:1;transform:none}
+.zap .topo{background:var(--verde);color:#fff;padding:18px 26px;display:flex;align-items:center;gap:14px;font-weight:800;font-size:22px}
+.zap .topo span{font-weight:600;opacity:.8;font-size:17px;margin-left:auto}
+.zap .conversa{background:#F3EDE2;padding:26px;max-height:760px;overflow:hidden}
+.zap .balao{background:var(--verde-claro);border-radius:18px 18px 4px 18px;padding:18px 22px;font-size:19px;line-height:1.45;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.08);margin-left:40px}
+.zap .balao strong{font-weight:800}
+.zap .hora{display:block;text-align:right;font-size:14px;color:var(--texto-2);margin-top:6px}
+/* comanda */
+.comanda{position:absolute;right:120px;top:90px;width:420px;background:#fffdf7;box-shadow:0 30px 60px -25px rgba(40,25,5,.55);padding:26px 26px 34px;font:600 18px/1.45 ui-monospace,Consolas,monospace;color:#222;clip-path:inset(0 0 100% 0);transition:clip-path 1.6s steps(24,end);z-index:15}
+.comanda.on{clip-path:inset(0 0 0 0)}
+.comanda::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:12px;background:radial-gradient(circle at 8px -2px,transparent 8px,#fffdf7 9px) -8px 0/16px 12px repeat-x}
+.comanda .imp{position:absolute;left:-30px;right:-30px;top:-34px;height:40px;border-radius:12px;background:#2b2b2b;box-shadow:inset 0 -6px 0 #111}
+.comanda h4{margin:0 0 2px;text-align:center;font-size:22px}
+.comanda .cod{text-align:center;font-size:30px;font-weight:900;margin:2px 0 6px}
+.comanda hr{border:0;border-top:2px dashed #999;margin:10px 0}
+.comanda .lin{display:flex;justify-content:space-between;gap:10px}
+/* selo e cursor */
+.selo{position:absolute;right:70px;top:46px;background:var(--texto);color:#fff;border-radius:999px;padding:12px 22px;font-weight:800;font-size:22px;opacity:0;transform:translateY(-10px);transition:opacity .5s,transform .5s;z-index:20}
+.selo.on{opacity:1;transform:none}
+.cursor{position:absolute;left:0;top:0;width:34px;height:34px;pointer-events:none;z-index:50;transition:opacity .3s;opacity:0}
+.cursor.on{opacity:1}
+.cursor svg{width:34px;height:34px;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
+.cursor.toque svg{display:none}
+.cursor.toque::before{content:"";position:absolute;left:-22px;top:-22px;width:44px;height:44px;border-radius:50%;background:rgba(30,27,22,.28);box-shadow:0 0 0 3px rgba(255,255,255,.85)}
+.anel{position:absolute;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid var(--tomate);pointer-events:none;z-index:49;animation:anel .6s ease-out forwards}
+@keyframes anel{to{transform:scale(3.4);opacity:0}}
+/* nada decorativo do palco pega clique: os toques passam para as telas de verdade */
+.lado,.zap,.comanda,.faixa,.selo,.titulo,.fundo{pointer-events:none}
+.cortina{position:absolute;inset:0;background:var(--creme);opacity:0;pointer-events:none;transition:opacity .6s;z-index:40}
+.cortina.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="fundo"><i class="mancha m1"></i><i class="mancha m2"></i><i class="mancha m3"></i></div>
+
+<div class="dev desk fora escondido" id="d-site"><div class="barra"><i class="bola"></i><i class="bola"></i><i class="bola"></i><div class="url"><svg viewBox="0 0 24 24" fill="none" stroke="#6B5E4E" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>pizzariapereira.com.br</span></div></div><iframe id="f-site" name="site" title="site"></iframe></div>
+<div class="dev desk fora escondido" id="d-gest"><div class="barra"><i class="bola"></i><i class="bola"></i><i class="bola"></i><div class="url"><svg viewBox="0 0 24 24" fill="none" stroke="#6B5E4E" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>pizzariapereira.com.br/gestao</span></div></div><iframe id="f-gest" name="gest" title="gestão"></iframe></div>
+<div class="dev cel fora escondido" id="d-cel"><div class="nome">Cliente</div><iframe id="f-cel" name="cel" title="celular do cliente"></iframe></div>
+<div class="dev cel fora escondido" id="d-moto"><div class="nome">Entregador</div><iframe id="f-moto" name="moto" title="celular do entregador"></iframe></div>
+
+<div class="lado fora" id="lado"><h2 id="ladoT"></h2><ul id="ladoL"></ul></div>
+<div class="zap" id="zap"><div class="topo">Pizzaria Pereira <span>mensagem recebida</span></div><div class="conversa"><div class="balao" id="zapTexto"></div></div></div>
+<div class="comanda" id="comanda"><div class="imp"></div><div id="comandaTexto"></div></div>
+
+<div class="titulo fora" id="tAbre"><div class="caixa">
+  <img class="anima-entra" src="/logos/logo-vertical.webp" alt="">
+  <h1 class="anima-entra d2">Pedido, gestão e entrega<br><em>num sistema só.</em></h1>
+  <div class="pilares" id="pilares">
+    <div class="pilar"><i><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></i>Site de pedidos</div>
+    <div class="pilar"><i><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 12l3-3 3 2 4-4"/></svg></i>Gestão da pizzaria</div>
+    <div class="pilar"><i><svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M9 17h5l3-7h-4M6 14l3-5h4"/></svg></i>App do entregador</div>
+  </div>
+</div></div>
+<div class="titulo fora" id="tFim"><div class="caixa">
+  <img class="anima-entra" src="/logos/logo-vertical.webp" alt="">
+  <h1 class="anima-entra d2">Do forno até a porta,<br><em>tudo num lugar só.</em></h1>
+  <p class="anima-entra d3">Site próprio · Gestão completa · Entregas rastreadas · Sem comissão de aplicativo</p>
+  <p class="anima-entra d3 aviso-ia">Narração com voz gerada por inteligência artificial</p>
+</div></div>
+
+<div class="faixa" id="faixa"><b></b><span id="faixaT"></span></div>
+<div class="selo" id="selo"></div>
+<div class="cursor" id="cursor"><svg viewBox="0 0 24 24"><path d="M4 2.5 19.5 13l-7 1.4-3.7 6.6z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+<div class="cortina" id="cortina"></div>
+
+<script>
+'use strict';
+const $ = (s) => document.querySelector(s);
+const DEV = { site: $('#d-site'), gest: $('#d-gest'), cel: $('#d-cel'), moto: $('#d-moto') };
+const FR = { site: $('#f-site'), gest: $('#f-gest'), cel: $('#f-cel'), moto: $('#f-moto') };
+// posições de cada aparelho em cada layout: [x, y, escala]
+const LAYOUTS = {
+  vazio: {},
+  site: { site: [160, 78, 1] },
+  gest: { gest: [160, 78, 1] },
+  celular: { cel: [300, 102, 1] },
+  celzap: { cel: [300, 102, 1] },
+  dupla: { gest: [70, 222, 0.7], cel: [1330, 112, 0.98] },
+  trio: { moto: [70, 150, 0.9], gest: [478, 268, 0.6], cel: [1470, 150, 0.9] }
+};
+let atual = 'vazio';
+const P = window.P = {
+  iniciar(urls) { for (const k in urls) FR[k].src = urls[k]; },
+  layout(nome) {
+    const L = LAYOUTS[nome] || {};
+    for (const k in DEV) {
+      const d = DEV[k], pos = L[k];
+      if (pos) {
+        d.classList.remove('escondido');
+        d.style.transform = 'translate(' + pos[0] + 'px,' + pos[1] + 'px) scale(' + pos[2] + ')';
+        requestAnimationFrame(() => d.classList.remove('fora'));
+        void d.offsetWidth; d.classList.remove('fora'); d.style.opacity = '';
+      } else if (!d.classList.contains('fora')) {
+        d.classList.add('fora');
+        const ant = d.style.transform || 'translate(0,0) scale(1)';
+        d.style.transform = ant.replace(/scale\(([\d.]+)\)/, (m, s) => 'scale(' + (+s * 0.94) + ')');
+        setTimeout(() => { if (d.classList.contains('fora')) d.classList.add('escondido'); }, 800);
+      }
+    }
+    const rot = nome === 'trio' || nome === 'dupla';
+    DEV.cel.classList.toggle('rotulo', rot); DEV.moto.classList.toggle('rotulo', rot);
+    atual = nome;
+  },
+  // deixa um aparelho já desenhado antes de entrar: na posição do layout, quase transparente (1%, invisível a olho).
+  // Sem isso o Chrome só pinta a tela inteira na hora de mostrar, e a transição engasga.
+  preparar(nome, k) {
+    const d = DEV[k], pos = LAYOUTS[nome][k];
+    d.style.transition = 'none'; d.classList.remove('escondido');
+    d.style.transform = 'translate(' + pos[0] + 'px,' + pos[1] + 'px) scale(' + pos[2] * 0.94 + ')'; d.style.opacity = '0.01';
+    void d.offsetWidth; d.style.transition = '';
+  },
+  // posição de um aparelho já com o layout aplicado (sem esperar a transição)
+  instantaneo(nome) { for (const d of Object.values(DEV)) { d.style.transition = 'none'; } P.layout(nome); void document.body.offsetWidth; for (const d of Object.values(DEV)) d.style.transition = ''; },
+  frame(k) { const r = FR[k].getBoundingClientRect(); return { x: r.left, y: r.top, s: r.width / FR[k].offsetWidth }; },
+  titulo(qual) { $('#tAbre').classList.toggle('fora', qual !== 'abre'); $('#tFim').classList.toggle('fora', qual !== 'fim'); if (qual !== 'abre') document.querySelectorAll('.pilar').forEach((p) => p.classList.remove('on')); },
+  pilar(i) { const p = document.querySelectorAll('.pilar')[i]; if (p) p.classList.add('on'); },
+  faixa(t) { const f = $('#faixa'); if (!t) { f.classList.remove('on'); return; } if (f.classList.contains('on') && $('#faixaT').textContent !== t) { f.classList.remove('on'); setTimeout(() => { $('#faixaT').textContent = t; f.classList.add('on'); }, 450); } else { $('#faixaT').textContent = t; f.classList.add('on'); } },
+  // troca de painel com o anterior ainda na tela: some, troca o texto e volta (os itens marcados no meio esperam)
+  lado(titulo, itens) {
+    const l = $('#lado'); clearTimeout(P._ladoT);
+    if (!titulo) { P._ladoPend = null; l.classList.add('fora'); return; }
+    const poe = () => { $('#ladoT').innerHTML = titulo; $('#ladoL').innerHTML = itens.map((t) => '<li><i>✓</i><span>' + t + '</span></li>').join(''); const pend = P._ladoPend || []; P._ladoPend = null; void l.offsetWidth; l.classList.remove('fora'); pend.forEach((i) => P.ladoItem(i)); };
+    if (!l.classList.contains('fora') && $('#ladoT').innerHTML !== titulo) { l.classList.add('fora'); P._ladoPend = []; P._ladoT = setTimeout(poe, 620); } else poe();
+  },
+  ladoItem(i) { if (P._ladoPend) { P._ladoPend.push(i); return; } const li = document.querySelectorAll('#ladoL li')[i]; if (li) li.classList.add('on'); },
+  zap(texto) { const z = $('#zap'); if (!texto) { z.classList.remove('on'); return; } $('#zapTexto').innerHTML = texto.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(/\*([^*\n]+)\*/g, '<strong>$1</strong>').replace(/_([^_\n]+)_/g, '<em>$1</em>') + '<span class="hora">agora</span>'; z.classList.add('on'); },
+  comanda(html) { const c = $('#comanda'); if (!html) { c.style.transition = 'opacity .35s'; c.style.opacity = '0'; setTimeout(() => { c.classList.remove('on'); c.style.transition = ''; c.style.opacity = ''; }, 400); return; } $('#comandaTexto').innerHTML = html; void c.offsetWidth; c.classList.add('on'); },
+  selo(t) { const s = $('#selo'); if (t) s.textContent = t; s.classList.toggle('on', !!t); },
+  cortina(on) { $('#cortina').classList.toggle('on', !!on); },
+  cursorTipo(t) { const c = $('#cursor'); c.classList.toggle('on', !!t); c.classList.toggle('toque', t === 'toque'); },
+  _cx: 960, _cy: 600, _anim: 0,
+  _poeCursor(x, y) { P._cx = x; P._cy = y; $('#cursor').style.transform = 'translate(' + (x - 4) + 'px,' + (y - 3) + 'px)'; },
+  cursorEm(x, y) { cancelAnimationFrame(P._anim); P._poeCursor(x, y); },
+  // anda até (x, y) em ms, quadro a quadro, com a mesma curva do gravador (acelera e freia)
+  cursorVai(x, y, ms) {
+    cancelAnimationFrame(P._anim);
+    const de = { x: P._cx, y: P._cy }, t0 = performance.now();
+    const passo = (t) => { const f = Math.min(1, (t - t0) / ms), e = f < 0.5 ? 4 * f * f * f : 1 - Math.pow(-2 * f + 2, 3) / 2; P._poeCursor(de.x + (x - de.x) * e, de.y + (y - de.y) * e); if (f < 1) P._anim = requestAnimationFrame(passo); };
+    P._anim = requestAnimationFrame(passo);
+  },
+  clique(x, y) { const a = document.createElement('i'); a.className = 'anel'; a.style.left = x + 'px'; a.style.top = y + 'px'; document.body.appendChild(a); setTimeout(() => a.remove(), 700); }
+};
+</script>
+</body>
+</html>

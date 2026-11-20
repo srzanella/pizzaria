@@ -1,0 +1,97 @@
+{
+  "titulo": "Pizzaria Pereira: pedido, gestão e entrega num sistema só",
+  "obs": "fala = texto que aparece na legenda; voz = o mesmo texto escrito do jeito que a voz sintética pronuncia certo. O sinal | divide a fala em trechos (o mesmo número na fala e na voz): cada trecho começa quando a cena chega naquele ponto (fala(k) no gravar.mjs), ou logo depois do anterior.",
+  "narracao": {
+    "motor": "openai",
+    "modelo": "gpt-4o-mini-tts-2025-12-15",
+    "voz": "cedar",
+    "instrucoes": "Narração de um vídeo de demonstração de um sistema para pizzarias. Fale em português do Brasil, com sotaque brasileiro neutro, voz calorosa, confiante e simpática, como num vídeo de produto moderno. Ritmo dinâmico e natural, um pouco mais rápido que uma conversa calma, sem pausas longas no meio das frases: só pausas curtas nas vírgulas e nos pontos. Siglas com o nome das letras em português: IBGE é i-bê-gê-é. CEP se lê cép. Pix se lê piks. WhatsApp, Google e email como os brasileiros falam no dia a dia.",
+    "obs": "motor openai: precisa da variável OPENAI_API_KEY; lê a fala (ou vozIA, se a cena tiver). motor piper: offline, lê o campo voz. Trocar a voz: mude voz aqui (cedar, marin, onyx, ash, coral, nova...) e rode narracao.mjs; depois grave de novo, porque as durações mudam."
+  },
+  "cenas": [
+    {
+      "id": "abertura",
+      "faixa": "",
+      "fala": "Pedido, gestão e entrega num sistema só. Este é o sistema da Pizzaria Pereira: o site onde o cliente pede, a gestão onde a equipe trabalha e o aplicativo que acompanha o entregador até a porta.",
+      "voz": "Pedido, gestão e entrega, num sistema só. Este é o sistema da Pizzaria Pereira: o site onde o cliente pede, a gestão onde a equipe trabalha, e o aplicativo que acompanha o entregador até a porta."
+    },
+    {
+      "id": "vitrine",
+      "faixa": "Site próprio, com a marca da pizzaria",
+      "fala": "Tudo começa no site da própria pizzaria, com a marca e o cardápio dela. O cliente vê na hora se a loja está aberta, as promoções do dia e todos os sabores, com os ingredientes.",
+      "voz": "Tudo começa no site da própria pizzaria, com a marca e o cardápio dela. O cliente vê na hora se a loja está aberta, as promoções do dia, e todos os sabores, com os ingredientes."
+    },
+    {
+      "id": "montar",
+      "faixa": "Pizza montada na tela",
+      "fala": "Montar a pizza é visual: escolhe o tamanho, divide meio a meio e navega pelos sabores por categoria. | Cada sabor aparece na pizza enquanto o cliente decide, e o preço acompanha cada escolha. | Depois vem a borda recheada, uma observação se precisar, e a pizza vai para o forno.",
+      "voz": "Montar a pizza é visual: escolhe o tamanho, divide meio a meio, e navega pelos sabores por categoria. | Cada sabor aparece na pizza enquanto o cliente decide, e o preço acompanha cada escolha. | Depois vem a borda recheada, uma observação se precisar, e a pizza vai para o forno."
+    },
+    {
+      "id": "promocoes",
+      "faixa": "Promoções que se aplicam sozinhas",
+      "fala": "As promoções entram sozinhas: combos, cupons, frete grátis e brindes. E o site ainda avisa o que falta para ganhar a próxima.",
+      "voz": "As promoções entram sozinhas: combos, cupons, frete grátis e brindes. E o site ainda avisa o que falta para ganhar a próxima."
+    },
+    {
+      "id": "entrega",
+      "faixa": "Endereço pelo número · taxa pela distância",
+      "fala": "Antes de fechar, o site sugere acompanhamentos e bebidas, e o ticket médio sobe sem esforço. | Na entrega, basta o CEP e o número. | O sistema acha a porta na base oficial de endereços do IBGE, calcula a distância pela rota e cobra a taxa da faixa certa. | Se precisar, o cliente arrasta o mapa e confirma o ponto exato da entrega.",
+      "voz": "Antes de fechar, o site sugere acompanhamentos e bebidas, e o tíquete médio sobe sem esforço. | Na entrega, basta o cep e o número. | O sistema acha a porta na base oficial de endereços do i bê gê é, calcula a distância pela rota, e cobra a taxa da faixa certa. | Se precisar, o cliente arrasta o mapa, e confirma o ponto exato da entrega."
+    },
+    {
+      "id": "whatsapp",
+      "faixa": "Pedido pronto no WhatsApp",
+      "fala": "Depois, a forma de pagamento: Pix, cartão ou dinheiro, já com o troco. O pedido chega no WhatsApp da pizzaria pronto e organizado, com o link para o cliente acompanhar.",
+      "voz": "Depois, a forma de pagamento: píks, cartão ou dinheiro, já com o troco. O pedido chega no uótsap da pizzaria pronto e organizado, com o link para o cliente acompanhar."
+    },
+    {
+      "id": "conta",
+      "faixa": "Conta sem senha · Pedir de novo",
+      "fala": "Quem cria conta entra sem senha: digita o celular ou o email e recebe um código. | O código chega na hora, e também dá para entrar com o Google. | Na conta ficam os pedidos e os endereços guardados. Da próxima vez, é só tocar em Pedir de novo.",
+      "voz": "Quem cria conta entra sem senha: digita o celular ou o imêiu, e recebe um código. | O código chega na hora, e também dá para entrar com o gúgou. | Na conta ficam os pedidos e os endereços guardados. Da próxima vez, é só tocar em: pedir de novo."
+    },
+    {
+      "id": "aovivo",
+      "faixa": "Gestão: pedidos ao vivo",
+      "fala": "Na pizzaria, o pedido aparece na tela na mesma hora, com aviso sonoro. | Um toque confirma o pedido, e outro manda para o forno. | A comanda sai na impressora, com tudo o que a cozinha precisa.",
+      "voz": "Na pizzaria, o pedido aparece na tela na mesma hora, com aviso sonoro. | Um toque confirma o pedido, e outro manda para o forno. | A comanda sai na impressora, com tudo o que a cozinha precisa."
+    },
+    {
+      "id": "acompanha",
+      "faixa": "O cliente acompanha em tempo real",
+      "fala": "O cliente vê cada etapa ao vivo pelo link, sem precisar ligar para perguntar.",
+      "voz": "O cliente vê cada etapa ao vivo pelo link, sem precisar ligar para perguntar."
+    },
+    {
+      "id": "entregador",
+      "faixa": "Entregador rastreado no mapa",
+      "fala": "Quando sai para entrega, o pedido vai para o aplicativo do entregador. | Ele manda a posição em tempo real: o cliente vê a moto chegando no mapa, com o tempo estimado, e a gestão acompanha todos os entregadores ao mesmo tempo. | Na porta, é só segurar o botão Entreguei e o pedido está concluído.",
+      "voz": "Quando sai para entrega, o pedido vai para o aplicativo do entregador. | Ele manda a posição em tempo real: o cliente vê a moto chegando no mapa, com o tempo estimado, e a gestão acompanha todos os entregadores ao mesmo tempo. | Na porta, é só segurar o botão entreguei, e o pedido está concluído."
+    },
+    {
+      "id": "clientes",
+      "faixa": "Clientes e campanhas",
+      "fala": "Cada cliente ganha uma ficha com o histórico, quanto já gastou, o bairro e as anotações da equipe. E a lista de quem aceita receber promoções fica pronta para as campanhas.",
+      "voz": "Cada cliente ganha uma ficha com o histórico, quanto já gastou, o bairro, e as anotações da equipe. E a lista de quem aceita receber promoções fica pronta para as campanhas."
+    },
+    {
+      "id": "relatorios",
+      "faixa": "Relatórios do negócio",
+      "fala": "Os números do negócio ficam à mão: vendas por dia e por horário, as regiões que mais pedem, os sabores campeões, os tempos de preparo e de entrega, e o fechamento do caixa.",
+      "voz": "Os números do negócio ficam à mão: vendas por dia e por horário, as regiões que mais pedem, os sabores campeões, os tempos de preparo e de entrega, e o fechamento do caixa."
+    },
+    {
+      "id": "equipe",
+      "faixa": "Equipe e conferência de valores",
+      "fala": "Cada pessoa da equipe entra com o próprio usuário. E o sistema confere o valor de todo pedido com o cardápio: se algo não bate, a gestão avisa.",
+      "voz": "Cada pessoa da equipe entra com o próprio usuário. E o sistema confere o valor de todo pedido com o cardápio: se algo não bate, a gestão avisa."
+    },
+    {
+      "id": "fim",
+      "faixa": "",
+      "fala": "Site próprio, gestão completa e entregas rastreadas, sem pagar comissão para aplicativo e com os clientes e os dados nas suas mãos. Pizzaria Pereira: do forno até a porta, tudo num lugar só.",
+      "voz": "Site próprio, gestão completa e entregas rastreadas, sem pagar comissão para aplicativo, e com os clientes e os dados nas suas mãos. Pizzaria Pereira: do forno até a porta, tudo num lugar só."
+    }
+  ]
+}
