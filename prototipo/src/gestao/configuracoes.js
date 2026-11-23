@@ -1,9 +1,13 @@
-/* Gestão — Configurações: "Geral" (meta do dia, avisos, dados de demonstração, minha senha), "Equipe" (quem entra
-   na gestão), "Email dos clientes" (por onde sai o código de acesso: Gmail, Brevo ou outro servidor SMTP) e "Login
-   com Google" (o ID do cliente do botão "Continuar com Google"). As três últimas só para administradores.
+/* Gestão — Configurações: "Geral" (meta do dia, avisos, dados de demonstração, minha senha), "Pizzaria" (WhatsApp
+   que recebe os pedidos, contato e modo teste/produção), "Equipe" (quem entra na gestão), "Email dos clientes" (por
+   onde sai o código de acesso: Gmail, Brevo ou outro servidor SMTP) e "Login com Google" (o ID do cliente do botão
+   "Continuar com Google"). Todas menos a Geral só para administradores.
    Aqui também fica a tela "Crie a sua senha" do primeiro acesso (chamada pelo inicia() de paginas.js). */
 const ICO_CFG = {
   geral: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/>',
+  loja: '<path d="M4 9.5 5.6 4h12.8L20 9.5"/><path d="M4 9.5c0 1.6 1.3 2.8 2.7 2.8s2.6-1.2 2.6-2.8c0 1.6 1.2 2.8 2.7 2.8s2.7-1.2 2.7-2.8c0 1.6 1.2 2.8 2.6 2.8S20 11.1 20 9.5"/><path d="M5.5 12v8h13v-8M10 20v-4.5h4V20"/>',
+  teste: '<path d="M9.5 3.5h5M10.5 3.6v5.6L5.2 18.4A1.4 1.4 0 0 0 6.4 20.5h11.2a1.4 1.4 0 0 0 1.2-2.1l-5.3-9.2V3.6"/><path d="M7.6 14.5h8.8"/>',
+  producao: '<circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.8 2.8L16.2 9.6"/>',
   equipe: '<circle cx="9" cy="8" r="3.3"/><path d="M3 19.5c.7-3.4 3.1-5.2 6-5.2s5.3 1.8 6 5.2"/><path d="M15.5 4.8a3.2 3.2 0 0 1 0 6.3M17.6 14.6c1.8.6 3 2.2 3.4 4.9"/>',
   chave: '<circle cx="8" cy="15" r="4.2"/><path d="M11 12 20 3M16.5 6.5l2.6 2.6M13.8 9.2l2 2"/>',
   email: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/>',
@@ -27,19 +31,21 @@ const AJUDA_EMAIL = {
   outro: '<p>Use os dados de SMTP que o provedor do seu email informa: servidor, porta, segurança, usuário e senha. Quase sempre é a porta <b>465 com SSL</b> ou a <b>587 com STARTTLS</b>.</p>'
 };
 
-const ABAS_CFG = [['geral', 'Geral', 'Geral'], ['equipe', 'Equipe', 'Equipe'], ['email', 'Email dos clientes', 'Email'], ['google', 'Login com Google', 'Google']]; // nome; nome curto no celular
+const ABAS_CFG = [['geral', 'Geral', 'Geral'], ['loja', 'Pizzaria e pedidos', 'Pizzaria'], ['equipe', 'Equipe', 'Equipe'], ['email', 'Email dos clientes', 'Email'], ['google', 'Login com Google', 'Google']]; // nome; nome curto no celular
 PAGINAS.configuracoes = async () => {
   const adm = E.usuario.admin;
   const aba = adm && ABAS_CFG.some(([id]) => id === E.param) ? E.param : 'geral';
   const abas = adm ? '<nav class="cfg-abas" aria-label="Seções das configurações">' + ABAS_CFG.map(([id, n, curto]) =>
-    '<a href="#/configuracoes/' + id + '"' + (id === aba ? ' aria-current="page"' : '') + '>' + svgCfg(id) + '<span class="cfg-longo">' + n + '</span><span class="cfg-curto">' + curto + '</span>' + (id === 'email' || id === 'google' ? '<i class="cfg-ponto" id="cfgPonto-' + id + '" hidden></i>' : '') + '</a>').join('') + '</nav>' : '';
+    '<a href="#/configuracoes/' + id + '"' + (id === aba ? ' aria-current="page"' : '') + '>' + svgCfg(id) + '<span class="cfg-longo">' + n + '</span><span class="cfg-curto">' + curto + '</span>' + (id === 'loja' || id === 'email' || id === 'google' ? '<i class="cfg-ponto" id="cfgPonto-' + id + '" hidden></i>' : '') + '</a>').join('') + '</nav>' : '';
   if (aba === 'email') await cfgEmail(abas);
   else if (aba === 'google') await cfgGoogle(abas);
   else if (aba === 'equipe') await cfgEquipe(abas);
+  else if (aba === 'loja') await cfgLoja(abas);
   else await cfgGeral(abas);
   const atual = $('.cfg-abas [aria-current]');
   if (atual && atual.scrollIntoView) atual.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   if (adm) { // pontinhos das abas: verde funcionando, amarelo caixa de teste, vermelho com problema, cinza desligado
+    if (aba !== 'loja') api('GET', '/api/ajustes/loja').then(pontoLoja).catch(() => {});
     if (aba !== 'email') api('GET', '/api/ajustes/email').then(pontoEmail).catch(() => {});
     if (aba !== 'google') api('GET', '/api/ajustes/google').then(pontoGoogle).catch(() => {});
   }
@@ -57,7 +63,7 @@ async function cfgGeral(abas) {
     '<section class="card"><h3>Avisos de pedido novo</h3><p class="nota">Valem para este navegador.</p><div class="linha-form"><button type="button" class="btn" id="aSom" aria-pressed="' + E.som + '">' + (E.som ? 'Som ligado' : 'Som desligado') + '</button>' + (notifPossivel ? '<button type="button" class="btn" id="aNotif" aria-pressed="' + (E.notif && Notification.permission === 'granted') + '">' + (E.notif && Notification.permission === 'granted' ? 'Notificações ligadas' : 'Ativar notificações') + '</button>' : '<span class="nota">Notificações do navegador só funcionam com o site em HTTPS.</span>') + '</div></section>' +
     '<section class="card"><h3>Dados de demonstração</h3><p class="nota">Pedidos fictícios dos últimos 90 dias (até ontem), com o cardápio, os horários e as faixas de entrega reais, para conhecer os relatórios antes de ter histórico. Eles nunca entram no dia de hoje e saem todos de uma vez.</p>' +
     (adm ? '<p><b>' + (E.demo ? num(E.demo) + ' pedidos de demonstração carregados.' : 'Nenhum dado de demonstração.') + '</b></p><div class="linha-form">' + (E.demo ? '<button type="button" class="btn perigo" id="demoTira">Remover os dados de demonstração</button>' : '<button type="button" class="btn prim" id="demoPoe">Carregar dados de demonstração</button>') + '</div>' : '<p class="nota">Só administradores carregam ou removem.</p>') + '</section>' +
-    '<section class="card"><h3>Cardápio, horários e entrega</h3><p class="nota">Ficam no portal do site. Depois de mudar, copie o JSON do portal para o projeto e publique de novo para valer aqui.' + (adm ? ' Quem entra na gestão fica em <a class="link forte" href="#/configuracoes/equipe">Equipe</a>.' : '') + '</p><div class="linha-form"><a class="btn" href="/#portal" target="_blank" rel="noopener">Abrir o portal do site ↗</a></div></section>' +
+    '<section class="card"><h3>Cardápio, horários e entrega</h3><p class="nota">O WhatsApp, o contato e o modo teste ficam em ' + (adm ? '<a class="link forte" href="#/configuracoes/loja">Pizzaria e pedidos</a>' : 'Pizzaria e pedidos (administradores)') + '. O resto fica no portal do site. Depois de mudar, copie o JSON do portal para o projeto e publique de novo para valer aqui.' + (adm ? ' Quem entra na gestão fica em <a class="link forte" href="#/configuracoes/equipe">Equipe</a>.' : '') + '</p><div class="linha-form"><a class="btn" href="/#portal" target="_blank" rel="noopener">Abrir o portal do site ↗</a></div></section>' +
     htmlMinhaSenha() + '</div>';
   ligaMinhaSenha($('#fMinha'), '#minhaRes', () => { $('#fMinha').reset(); toast('Senha trocada.'); });
   if (E.param === 'senha' && $('#minhaSenha')) { $('#minhaSenha').scrollIntoView({ block: 'center' }); setTimeout(() => $('#fMinha').elements.namedItem('atual').focus(), 300); }
@@ -68,6 +74,77 @@ async function cfgGeral(abas) {
   const poe = $('#demoPoe'), tira = $('#demoTira');
   if (poe) poe.addEventListener('click', async () => { poe.disabled = true; poe.textContent = 'Gerando…'; try { const r = await api('POST', '/api/demo', {}); E.analise.clear(); E.clientes = null; toast(num(r.inseridos) + ' pedidos de demonstração carregados.'); } catch (er) { toast(er.message); } PAGINAS.configuracoes(); });
   if (tira) tira.addEventListener('click', async () => { if (!confirm('Remover todos os ' + num(E.demo) + ' pedidos de demonstração? Os pedidos de verdade continuam.')) return; tira.disabled = true; try { const r = await api('DELETE', '/api/demo'); E.analise.clear(); E.clientes = null; toast(num(r.removidos) + ' pedidos de demonstração removidos.'); } catch (er) { toast(er.message); } PAGINAS.configuracoes(); });
+}
+
+/* ======================= Pizzaria e pedidos ======================= */
+// Valem no site na hora (o servidor aplica por cima do que foi publicado): sem copiar JSON nem publicar de novo.
+const MODOS_LOJA = {
+  producao: { nome: 'Produção', sub: 'pedidos só no horário', ico: 'producao' },
+  teste: { nome: 'Teste', sub: 'pedidos a qualquer hora', ico: 'teste' }
+};
+const AJUDA_MODO = {
+  producao: '<p><b>Produção é o modo do dia a dia.</b> O site segue os horários de funcionamento: com a pizzaria fechada, o cliente vê o cardápio e o aviso de fechado, mas não consegue finalizar o pedido.</p>',
+  teste: '<p><b>Teste é para experimentar o site com a pizzaria fechada</b> (conferir cardápio, preços, entrega e a mensagem que chega no WhatsApp). O site aceita pedidos <b>a qualquer hora</b> e mostra uma faixa "Modo teste ligado" para quem visitar com a loja fechada.</p>' +
+    '<p>Os pedidos feitos assim são pedidos de verdade: vão para o WhatsApp acima e aparecem na gestão. <b>Desligue antes de divulgar o site.</b></p>'
+};
+const foneFmtG = (n) => { const d = String(n || '').replace(/\D/g, ''); return d.length === 11 ? '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7) : d.length === 10 ? '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6) : d; };
+function pontoLoja(v) {
+  const p = $('#cfgPonto-loja');
+  if (!p) return;
+  const t = !!v.efetivo.modoTeste;
+  p.className = 'cfg-ponto ' + (t ? 'teste' : 'ok'); p.hidden = false;
+  p.title = t ? 'Site em modo teste' : 'Site em produção';
+}
+async function cfgLoja(abas) {
+  const v = await api('GET', '/api/ajustes/loja');
+  const ef = v.efetivo;
+  let modo = ef.modoTeste ? 'teste' : 'producao';
+  $('#conteudo').innerHTML = abas + '<div class="ajustes">' +
+    '<section class="card"><h3>Modo do site</h3>' +
+    '<p class="nota">Hoje: <b id="modoAgora"></b>. Muda no site na hora, para quem abrir ou recarregar a página.</p>' +
+    '<div class="mail-prov modo-loja" role="radiogroup" aria-label="Modo do site">' + Object.keys(MODOS_LOJA).map((id) => '<button type="button" role="radio" data-modo="' + id + '" aria-checked="false">' + svgCfg(MODOS_LOJA[id].ico) + '<b>' + MODOS_LOJA[id].nome + '</b><small>' + MODOS_LOJA[id].sub + '</small></button>').join('') + '</div>' +
+    '<div class="mail-ajuda" id="modoAjuda"></div></section>' +
+    '<section class="card"><h3>WhatsApp e contato</h3>' +
+    '<form class="mail-campos" id="fLoja" novalidate autocomplete="off">' +
+    '<label class="fld"><span>WhatsApp que recebe os pedidos</span><input class="campo" name="whatsapp" inputmode="tel" maxlength="20" placeholder="(17) 99999-9999" value="' + esc(foneFmtG(ef.whatsapp)) + '"><small class="fld-nota">Com DDD. É para este número que o site manda cada pedido e o botão de ajuda.</small></label>' +
+    '<div class="fld-duplo"><label class="fld"><span>Telefone fixo</span><input class="campo" name="telefoneFixo" inputmode="tel" maxlength="30" value="' + esc(ef.telefoneFixo || '') + '"></label>' +
+    '<label class="fld"><span>Instagram (sem @)</span><input class="campo" name="instagram" spellcheck="false" maxlength="100" value="' + esc(ef.instagram || '') + '"></label></div>' +
+    '<p class="mail-res" id="lojaRes" role="status" aria-live="polite"></p>' +
+    '<div class="mail-acoes"><button type="submit" class="btn prim grande">Salvar</button><span class="nota">Aparecem no rodapé e na ajuda do site.</span></div>' +
+    '</form></section></div>';
+  const desenhaModo = (animar) => {
+    $$('.modo-loja [data-modo]').forEach((b) => { const on = b.dataset.modo === modo; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
+    const aj = $('#modoAjuda');
+    aj.innerHTML = AJUDA_MODO[modo];
+    if (animar && !REDUZ) { aj.classList.remove('troca'); void aj.offsetWidth; aj.classList.add('troca'); }
+    $('#modoAgora').textContent = modo === 'teste' ? 'Teste (aceita pedidos fora do horário)' : 'Produção (segue os horários)';
+  };
+  desenhaModo(false);
+  pontoLoja(v);
+  $('.modo-loja').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-modo]');
+    if (!b || b.dataset.modo === modo) return;
+    const quer = b.dataset.modo;
+    if (quer === 'teste' && !confirm('Ligar o modo teste? O site vai aceitar pedidos a qualquer hora, mesmo com a pizzaria fechada.')) return;
+    try {
+      const r = await api('PATCH', '/api/ajustes/loja', { modoTeste: quer === 'teste' });
+      modo = r.efetivo.modoTeste ? 'teste' : 'producao';
+      desenhaModo(true); pontoLoja(r);
+      toast(modo === 'teste' ? 'Modo teste ligado.' : 'Site em produção.');
+    } catch (er) { toast(er.message); }
+  });
+  $('#fLoja').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target, res = $('#lojaRes');
+    const corpo = { whatsapp: f.elements.namedItem('whatsapp').value, telefoneFixo: f.elements.namedItem('telefoneFixo').value, instagram: f.elements.namedItem('instagram').value };
+    res.textContent = ''; res.className = 'mail-res';
+    try {
+      const r = await api('PATCH', '/api/ajustes/loja', corpo);
+      f.elements.namedItem('whatsapp').value = foneFmtG(r.efetivo.whatsapp);
+      f.elements.namedItem('instagram').value = r.efetivo.instagram || '';
+      toast('Contato salvo. Já vale no site.');
+    } catch (er) { res.textContent = er.message; res.className = 'mail-res erro'; }
+  });
 }
 
 /* ======================= Email dos clientes ======================= */
