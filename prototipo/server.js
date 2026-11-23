@@ -238,16 +238,30 @@ const fmtDia = new Intl.DateTimeFormat('en-CA', { timeZone: FUSO, year: 'numeric
 const diaOperacional = (d = new Date()) => fmtDia.format(new Date(d.getTime() - CORTE_HORAS * 3600e3));
 
 /* ---------------- dados publicados do site (cardápio, horários, entrega, promoções) ---------------- */
-let cacheSite = { mtime: -1, dados: {} };
+// Os ajustes da loja salvos na gestão (Configurações → Pizzaria: contato e modo teste) valem por cima do que foi
+// publicado: entram no dadosSite() e nas páginas na hora de enviar, sem gerar o site de novo.
+const CAMPOS_LOJA = ['whatsapp', 'telefoneFixo', 'instagram', 'modoTeste'];
+let ajustesLoja = { versao: 0, valores: {} };
+let cacheSite = { mtime: -1, versao: -1, publicado: {}, dados: {} };
 function dadosSite() {
   try {
     const st = fs.statSync(PAGINA);
     if (st.mtimeMs !== cacheSite.mtime) {
       const m = fs.readFileSync(PAGINA, 'utf8').match(/<script type="application\/json" id="pp-data">([\s\S]*?)<\/script>/);
-      cacheSite = { mtime: st.mtimeMs, dados: m ? JSON.parse(m[1]) : {} };
+      cacheSite = { mtime: st.mtimeMs, versao: -1, publicado: m ? JSON.parse(m[1]) : {}, dados: {} };
     }
   } catch (e) { console.error('Não consegui ler os dados da página:', e.message); }
+  if (cacheSite.versao !== ajustesLoja.versao) {
+    const pub = cacheSite.publicado;
+    cacheSite.dados = Object.assign({}, pub, { config: Object.assign({}, pub.config, ajustesLoja.valores) });
+    cacheSite.versao = ajustesLoja.versao;
+  }
   return cacheSite.dados;
+}
+// relida a cada minuto: com mais de uma instância, a que não recebeu o PATCH também passa a valer
+async function carregaAjustesLoja() {
+  const v = await lerConfig('loja', {});
+  if (JSON.stringify(v) !== JSON.stringify(ajustesLoja.valores)) ajustesLoja = { versao: ajustesLoja.versao + 1, valores: v };
 }
 // conta dos preços com o cardápio da página publicada (refeita quando a página muda)
 let cachePrecos = { dados: null, p: null };
@@ -545,10 +559,23 @@ async function alteraPedido(id, corpo, quem, confere) {
 
 /* ---------------- páginas (site e gestão), comprimidas uma vez por versão ---------------- */
 const cachePaginas = new Map();
+// aplica os ajustes da loja nos dados embutidos: pp-data (site e gestão) e pp-loja (entregador)
+const jsonHtml = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
+function comAjustesLoja(html) {
+  const v = ajustesLoja.valores;
+  if (!Object.keys(v).length) return html;
+  return html
+    .replace(/(<script type="application\/json" id="pp-data">)([\s\S]*?)(<\/script>)/, (t, a, j, b) => { const d = JSON.parse(j); d.config = Object.assign({}, d.config, v); return a + jsonHtml(d) + b; })
+    .replace(/(<script type="application\/json" id="pp-loja">)([\s\S]*?)(<\/script>)/, (t, a, j, b) => { const d = JSON.parse(j); if (v.whatsapp) d.whatsapp = v.whatsapp; return a + jsonHtml(d) + b; });
+}
 function enviaPagina(req, res, arq) {
   const st = fs.statSync(arq);
   let c = cachePaginas.get(arq);
-  if (!c || c.mtime !== st.mtimeMs) { const buf = fs.readFileSync(arq); c = { mtime: st.mtimeMs, buf, gz: zlib.gzipSync(buf, { level: 9 }) }; cachePaginas.set(arq, c); }
+  if (!c || c.mtime !== st.mtimeMs || c.versao !== ajustesLoja.versao) {
+    const buf = Buffer.from(comAjustesLoja(fs.readFileSync(arq, 'utf8')));
+    c = { mtime: st.mtimeMs, versao: ajustesLoja.versao, buf, gz: zlib.gzipSync(buf, { level: 9 }) };
+    cachePaginas.set(arq, c);
+  }
   const gz = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
   const h = { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Frame-Options': 'SAMEORIGIN', Vary: 'Accept-Encoding', 'Content-Length': gz ? c.gz.length : c.buf.length };
   if (gz) h['Content-Encoding'] = 'gzip';
@@ -814,6 +841,35 @@ async function rota(req, res) {
     const [metaDiaria, lojaGeo, demo] = await Promise.all([lerConfig('metaDiaria', 0), lerConfig('lojaGeo', null), contaDemo()]);
     return json(res, 200, { metaDiaria, lojaGeo, demo });
   }
+  // contato da pizzaria e modo teste/produção: por cima do publicado (data.json); valem no site na hora
+  if (p === '/api/ajustes/loja' && (m === 'GET' || m === 'PATCH')) {
+    if (m === 'PATCH') {
+      await exigeAdmin(req);
+      const b = await lerCorpo(req, 4096);
+      const novo = Object.assign({}, await lerConfig('loja', {}));
+      if (b.whatsapp !== undefined) {
+        let n = String(b.whatsapp || '').replace(/\D/g, '');
+        if (/^55\d{10,11}$/.test(n)) n = n.slice(2);
+        if (!/^[1-9]{2}\d{8,9}$/.test(n)) throw erro(400, 'WhatsApp inválido: use o DDD e o número, como (17) 99230-1855');
+        novo.whatsapp = n;
+      }
+      if (b.telefoneFixo !== undefined) novo.telefoneFixo = txt(b.telefoneFixo, 30);
+      if (b.instagram !== undefined) {
+        const ig = txt(b.instagram, 100).replace(/^https?:\/\/(www\.)?instagram\.com\//i, '').replace(/^@/, '').replace(/\/.*$/, '');
+        if (ig && !/^[A-Za-z0-9._]{1,30}$/.test(ig)) throw erro(400, 'Instagram inválido: só o nome do perfil, sem @');
+        novo.instagram = ig;
+      }
+      if (b.modoTeste !== undefined) novo.modoTeste = b.modoTeste === true;
+      for (const k of Object.keys(novo)) if (!CAMPOS_LOJA.includes(k)) delete novo[k];
+      await gravaConfig('loja', novo);
+      await carregaAjustesLoja();
+    } else await exigeSessao(req);
+    dadosSite(); // garante o publicado lido
+    const pub = cacheSite.publicado.config || {};
+    const publicado = {}, efetivo = {};
+    for (const k of CAMPOS_LOJA) { publicado[k] = pub[k]; efetivo[k] = k in ajustesLoja.valores ? ajustesLoja.valores[k] : pub[k]; }
+    return json(res, 200, { publicado, efetivo, ajustados: Object.keys(ajustesLoja.valores) });
+  }
   // dados de demonstração: só administradores; nunca no dia de hoje; apagáveis de uma vez
   if (p === '/api/demo' && (m === 'POST' || m === 'DELETE')) {
     await exigeAdmin(req);
@@ -887,6 +943,8 @@ let encerrando = false;
       await new Promise((r) => setTimeout(r, 2000));
     }
   }
+  await carregaAjustesLoja().catch((e) => console.error('ajustes da loja:', e.message));
+  setInterval(() => carregaAjustesLoja().catch(() => {}), 60e3).unref();
   await escutaEventos().catch((e) => { console.error('LISTEN:', e.message); setTimeout(() => escutaEventos().catch(() => {}), 5000); });
   frota.limpeza().catch(() => {});
   garanteLojaGeo().catch((e) => console.error('local da pizzaria:', e.message));
